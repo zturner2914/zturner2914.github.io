@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <title>Portfolio</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Josefin+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
   	<link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="assets/css/devicons.min.css" >
@@ -13,96 +15,118 @@
   <body>
 
 
-  <header>
-    <div class="container">
-      <div class="name">
-        <h1>Zach Turner</h1>
+    <header class="cleafix">
+      <div class="custom-container cleafix">
+        <div class="name">
+          Zach Turner
+        </div>
+        <div class="mobile-menu visible-xs">
+          <a href="#!" class="menu-icon"><span></span></a>
+        </div>
+        <nav class="cleafix">
+          <ul class="main-menu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#work-section">Work</a></li>
+            <li><a href="#contact-section">Contact</a></li>
+          </ul>
+        </nav>
       </div>
-      <nav>
-        <ul class="main-menu">
-          <li>About</li>
-          <li>Work</li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
+    </header>
 
     <!-- BODY -->
 
-  <div class="container">
-    <section class="work">
-      <div class="row">
-        <div class="col-sm-12">
-          <h2>Work</h2>
-          <hr>
-          <div class="work-pieces">
-            <img class="img-responsive" src="assets/imgs/mint.jpg" alt="">
-            <div class="work-cpy">
-              <h3>The Mint</h3>
-              <!-- <h3>The Mint - <span class="work-descript">custom built WordPress website</span></h3> -->
-              <!-- <p>Custom WordPress website</p> -->
-              <a class="view-site" href="">view site</a>
-              <a class="view-site" href="">view code</a>
-              <p class="tech">Technologies Used</p>
-              <span class="devicons devicons-html5">
-              <span class="devicons devicons-css3">
-              <span class="devicons devicons-javascript">
-              <span class="devicons devicons-jquery">
-              <span class="devicons devicons-wordpress">
-              <span class="devicons devicons-php">
+    <div>
+      <div class="home-hero-holder" style="background-image: url('assets/imgs/bkg.jpg')"></div>
+    </div>
+
+    <section id="about">
+        <div class="about-wrap">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <h1>Web developer, music lover, and lifelong learner.</h1>
+                <p>View my code on <a target="_blank" href="https://github.com/zturner2914"><span class="link-underline">Github</span></a>, connnect with me on <a target="_blank" href="https://www.linkedin.com/in/zachary-turner-b9834b25"><span class="link-underline">LinkedIn</span></a>, and check out my work below</p>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section id="work-section" class="work">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Work</h2>
+            <hr class="blue">
+            <div class="col-sm-4 work-pieces scroll-in">
+              <img class="img-responsive" src="assets/imgs/themint-guy.jpg" alt="">
+              <div class="work-cpy">
+                <h3>The Mint</h3>
+                <a class="view-site" href="https://thestudiomint.com/">view site</a>
+                <a class="view-site" href="">view code</a>
+                <p class="tech">Technologies Used</p>
+                <span class="devicons devicons-html5"></span>
+                <span class="devicons devicons-css3"></span>
+                <span class="devicons devicons-javascript"></span>
+                <span class="devicons devicons-jquery"></span>
+                <span class="devicons devicons-wordpress"></span>
+                <span class="devicons devicons-php"></span>
+              </div>
+            </div>
+            <div class="col-sm-4 work-pieces scroll-in">
+              <img class="img-responsive" src="assets/imgs/new-triple.jpg" alt="">
+              <div class="work-cpy">
+                <h3>Triple Ink</h3>
+                <a class="view-site" href="https://www.tripleink.com/">view site</a>
+                <a class="view-site" href="">view code</a>
+                <p class="tech">Technologies Used</p>
+                <span class="devicons devicons-html5"></span>
+                <span class="devicons devicons-css3"></span>
+                <span class="devicons devicons-javascript"></span>
+                <span class="devicons devicons-jquery"></span>
+                <span class="devicons devicons-wordpress"></span>
+                <span class="devicons devicons-php"></span>
+              </div>
+            </div>
+            <div class="col-sm-4 work-pieces scroll-in">
+              <img class="img-responsive" src="assets/imgs/syngenta.jpg" alt="">
+              <div class="work-cpy">
+                <h3>Syngenta Projects</h3>
+                <a class="view-site" href="">view site</a>
+                <a class="view-site" href="">view code</a>
+                <p class="tech">Technologies Used</p>
+                <span class="devicons devicons-html5"></span>
+                <span class="devicons devicons-css3"></span>
+                <span class="devicons devicons-javascript"></span>
+                <span class="devicons devicons-jquery"></span>
+              </div>
             </div>
           </div>
-          <div class="work-pieces">
-            <img class="img-responsive" src="assets/imgs/triple-ink.jpg" alt="">
-            <div class="work-cpy">
-              <h3>Triple Ink</h3>
-              <!-- <h3>The Mint - <span class="work-descript">custom built WordPress website</span></h3> -->
-              <!-- <p>Custom WordPress website</p> -->
-              <a class="view-site" href="">view site</a>
-              <a class="view-site" href="">view code</a>
-              <p class="tech">Technologies Used</p>
-              <span class="devicons devicons-html5">
-              <span class="devicons devicons-css3">
-              <span class="devicons devicons-javascript">
-              <span class="devicons devicons-jquery">
-              <span class="devicons devicons-wordpress">
-              <span class="devicons devicons-php">
-            </div>
-          </div>
-          <div class="work-pieces">
-            <img class="img-responsive" src="assets/imgs/calc.jpg" alt="">
-            <div class="work-cpy">
-              <h3>Corn Calculator</h3>
-              <a class="view-site" href="">view site</a>
-              <a class="view-site" href="">view code</a>
-              <p class="tech">Technologies Used</p>
-              <span class="devicons devicons-html5">
-              <span class="devicons devicons-css3">
-              <span class="devicons devicons-javascript">
-              <span class="devicons devicons-jquery">
+        </div>
+      </section>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer id="contact-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Contact Me</h2>
+            <hr>
+            <div class="contact">
+              <p><a target="_blank" href="https://www.linkedin.com/in/zachary-turner-b9834b25">LinkedIn</a></p>
+              <p><a target="_blank" href="https://github.com/zturner2914">Github</a></p>
+              <p><a target="_blank" href="mailto:zturner29@gmail.com">zturner29@gmail.com</a></p>
             </div>
           </div>
         </div>
       </div>
-
-
-    </section>
-
-
-
-
-
-
-  </div>
-
-    <!-- FOOTER -->
-    <footer>
-      footer here
     </footer>
 
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
   	<script src="assets/js/main.js"></script>
+    <script src="assets/js/is-visible.js"></script>
 
   </body>
 </html>
