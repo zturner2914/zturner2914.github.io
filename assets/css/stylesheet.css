@@ -284,20 +284,33 @@ ul li a:after {
    Work custom styles
    ========================================================================== */
   .work-pieces {
-    margin: 50px 0;
+    margin: 50px 5px;
     background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 50px 100px rgba(50,50,93,.05), 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.1);
-    opacity: 0:
+    opacity: 0;
+    padding: 0;
   }
 
 
   @media only screen and (min-width: 648px) {
 
     .work-pieces {
-      /* width: 600px; */
+      width: 350px;
       margin: 50px auto;
+      /* float: left; */
     }
+
+  }
+
+    @media only screen and (min-width: 992px) {
+
+      .work-pieces {
+        width: 30%;
+        margin: 50px 15px;
+        float: left;
+      }
+
 
 
   }
@@ -436,7 +449,7 @@ a.view-site:hover {
  .home-hero-holder {
     /* height: 50vh; */
     width: 100%;
-    min-height: 624px;
+    min-height: 687px;
     display: block;
     position: absolute;
     background-repeat: no-repeat;
