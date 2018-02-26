@@ -101,7 +101,7 @@ a,
 a:link,
 a:visited,
 a:active {
-  margin: 20px 0;
+  margin: 10px 0;
 
 }
 
@@ -379,6 +379,29 @@ margin-right: 15px;
 box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.0);
 text-align: center;
 border: 1px solid #1a2930;
+}
+
+
+
+@media only screen and (min-width: 992px) {
+
+  a.view-site {
+
+  width: 119px;
+  }
+
+
+}
+
+
+@media only screen and (min-width: 1200px) {
+
+  a.view-site {
+
+  width: 141px;
+  }
+
+
 }
 
 a.view-site:hover {
