@@ -30,16 +30,16 @@ div  {
 
 
 body {
-  font-family: 'roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #000000;
-  background: #162021;
+  background: #ffffff;
 }
 
 
 section {
-  margin: 20px 0;
+  margin: 80px 0;
 
 }
 hr {
@@ -52,10 +52,7 @@ hr {
 }
 
 hr.blue {
-
-  background: #66FCF1;
-
-
+  background: #453154;
 }
 
 
@@ -68,14 +65,14 @@ h1,h2,h3,h4,h5,h6 {
 h1 {
   font-size: 28px;
   line-height: 32px;
-  color: #ffffff;
+  color: #000000;
 }
 
 h2 {
   font-size: 30px;
   line-height: 30px;
   text-align: center;
-  color: #ffffff;
+  color: #000000;
 }
 
 h3  {
@@ -102,6 +99,8 @@ a:link,
 a:visited,
 a:active {
   margin: 10px 0;
+  text-decoration: none;
+  color: #000000;
 
 }
 
@@ -117,6 +116,7 @@ header {
   top: 0;
   -webkit-transition: all .3s;
   transition: all .3s;
+    box-shadow: 0 50px 100px rgba(50,50,93,.05), 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.1);
 }
 
 header.min-head {
@@ -149,6 +149,7 @@ ul li a  {
   color: #000000;
   position: relative;
   text-decoration: none;
+    font-family: 'Gloria Hallelujah', cursive;
 }
 
 ul li a:hover  {
@@ -182,6 +183,7 @@ ul li a:after {
   color:#162021;
   font-size: 25px;
   padding: 15px 0 15px 15px;
+  font-family: 'Gloria Hallelujah', cursive;
 }
 
 
@@ -233,6 +235,7 @@ ul li a:after {
     background-color:#ffffff;
     padding-top: 21px;
     color: #fff;
+    font-family: 'Gloria Hallelujah', cursive;
   }
 
   nav ul li {
@@ -438,24 +441,23 @@ a.view-site:hover {
    about custom styles
    ========================================================================== */
 .about-wrap {
-  color: #ffffff;
+  color: #000000;
   /* background-image: url('bkg.jpg'); */
   padding: 200px 0 100px 0;
-  height: 600px;
   width: 100%;
 }
 
 .about h1 {
-  color:#ffffff;
+  color:#000000;
 }
 
 .about-wrap p {
   font-size: 18px;
-  color:#ffffff;
+  color:#f000000;
 }
 
 .about-wrap p a {
-  color:#ffffff;
+  color:#000000;
   text-decoration: none;
 }
 
@@ -465,7 +467,7 @@ a.view-site:hover {
 }
 
 .link-underline {
-  border-bottom: 3px solid #66FCF1;
+  border-bottom: 3px solid #453154;
 }
 
 
