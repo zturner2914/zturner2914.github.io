@@ -57,7 +57,7 @@ hr.blue {
 
 
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3,h5,h6 {
   font-weight: normal;
   margin: 1.5rem 0;
 }
@@ -79,6 +79,13 @@ h3  {
   font-size: 24px;
   letter-spacing: 0.1rem;
   margin: 20px 0 0 0;
+}
+
+h4 {
+  font-size: 13px;
+  text-decoration: underline;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 button {
@@ -217,6 +224,11 @@ ul li a:after {
 
 @media only screen and (min-width: 768px) {
 
+  section {
+    margin: 120px 0;
+
+  }
+
   nav {
     float: right;
   }
@@ -293,6 +305,10 @@ ul li a:after {
     box-shadow: 0 50px 100px rgba(50,50,93,.05), 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.1);
     opacity: 0;
     padding: 0;
+  }
+
+  p.duties {
+    font-size: 12px;
   }
 
 
