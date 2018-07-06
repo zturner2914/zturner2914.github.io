@@ -4,30 +4,9 @@ html {
     line-height: 1.4;
 }
 
-
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
-    vertical-align: middle;
-}
-
-
-textarea {
-    resize: vertical;
-}
-
-
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
 div  {
     position: relative;
 }
-
 
 body {
 font-family: 'Open Sans', sans-serif;
@@ -226,7 +205,6 @@ ul li a:after {
 
   section {
     margin: 120px 0;
-
   }
 
   nav {
