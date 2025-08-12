@@ -1,169 +1,167 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bitter|Josefin+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
-  	<link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/devicons.min.css" >
-  </head>
-  <body>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zach Turner – Portfolio</title>
+  <meta name="description" content="Front‑end developer portfolio – WordPress VIP, Drupal migrations, custom Gutenberg blocks, and enterprise plugins." />
+  <meta property="og:title" content="Zach Turner – Portfolio" />
+  <meta property="og:description" content="WordPress VIP · Drupal · Gutenberg · Enterprise plugins" />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand"><span class="dot"></span> Zach Turner</div>
+      <nav class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a class="btn" href="Zachary_Turner_Resume_2025_with_short_summary.pdf">Resume</a>
+      </nav>
+    </div>
+  </header>
 
-
-    <header class="cleafix">
-      <div class="custom-container cleafix">
-        <div class="name">
-          Zach Turner's Portfolio
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="kicker">Front‑End Developer</div>
+        <h1>WordPress VIP · Drupal Migrations · Custom Gutenberg Blocks</h1>
+        <p class="lead">I build scalable plugins, dynamic Gutenberg blocks, and enterprise multisite architectures. Comfortable across PHP/JS, REST/OAuth, and editor UX — with a track record of reducing migration time and improving editorial workflows.</p>
+        <div class="stack">
+          <span class="pill">WordPress VIP</span>
+          <span class="pill">Drupal 9</span>
+          <span class="pill">Gutenberg</span>
+          <span class="pill">PHP / JS / TS</span>
+          <span class="pill">REST / OAuth</span>
+          <span class="pill">Multisite</span>
+          <span class="pill">GraphQL</span>
         </div>
-        <div class="mobile-menu visible-xs">
-          <a href="#!" class="menu-icon"><span></span></a>
-        </div>
-        <nav class="cleafix">
-          <ul class="main-menu">
-            <li><a target="_blank" href="https://zturner2914.github.io/assets/pdfs/Zach_Turner_Resume.pdf">RESUME</a></li>
-            <li><a href="#work-section">WORK</a></li>
-          </ul>
-        </nav>
       </div>
-    </header>
+      <div class="card project-card">
+        <h3 style="margin-top:0">Highlights</h3>
+        <ul class="colored">
+          <li>Drupal ➜ WordPress migration plugin (media, taxonomies, embeds)</li>
+          <li>Navigation Carousel block with dynamic filtering & “View More”</li>
+          <li>Nested “Dresser/Drawer” layout block system</li>
+          <li>Geolocation Search widget (typeahead, API integration)</li>
+          <li>Multisite plugin permission manager (USL sites)</li>
+        </ul>
+      </div>
+    </section>
 
-    <!-- BODY -->
-
-
-    <section id="about">
-      <!-- <div class="hero-background-cover">
-        <img src="assets/imgs/hero-bg.jpeg" alt="bg hero">
-      </div> -->
-        <div class="about-wrap">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="hero-text-bg">
-                  <h1>Web developer, music lover, and lifelong learner.</h1>
-                  <p>View my code on <a target="_blank" href="https://github.com/zturner2914"><span class="link-underline">Github</span></a>, connnect with me on <a target="_blank" href="https://www.linkedin.com/in/zachary-turner-b9834b25"><span class="link-underline">LinkedIn</span></a>, and check out my work below</p>
-                </div>
-              </div>
+    <section id="work" class="section">
+      <h2>Selected Work</h2>
+      <div class="grid projects">
+        <article class="item col-6 card project-card">
+          <h3>Drupal → WordPress Migration Plugin</h3>
+          <p>Automated migration of nodes, media, and taxonomies from Drupal into block‑based WordPress content. Replaced &lt;drupal-entity&gt; embeds with media‑safe HTML and mapped categories.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">Plugin</span>
+            <span class="pill">PHP</span>
+            <span class="pill">WordPress VIP</span>
+            <span class="pill">REST</span>
           </div>
+          <p style="margin-top:10px"><strong>Impact:</strong> Cut migration time dramatically and standardized content models across sites.</p>
+        </article>
+
+        <article class="item col-6 card project-card">
+          <h3>Navigation Carousel (Gutenberg)</h3>
+          <p>Dynamic carousel pulling articles by category with display count controls and a generated “View More” route (<code>/articles/more/[ids]/[slugs]</code>). Reusable across multisite.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">Gutenberg</span>
+            <span class="pill">React</span>
+            <span class="pill">WP REST API</span>
+          </div>
+        </article>
+
+        <article class="item col-6 card project-card">
+          <h3>Dresser / Drawer Nested Blocks</h3>
+          <p>Parent/child block system enabling editors to assemble complex layouts. OOP architecture, attributes persistence, and editor‑friendly controls.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">Gutenberg</span>
+            <span class="pill">React</span>
+            <span class="pill">SCSS</span>
+          </div>
+        </article>
+
+        <article class="item col-6 card project-card">
+          <h3>Geolocation Search widget</h3>
+          <p>Typeahead input calling <code>/locations/suggest</code> after the 3rd character; stores <code>postal_code</code>, <code>lat</code>, and <code>lon</code> for downstream UX. Secure nonce verification.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">API</span>
+            <span class="pill">Security</span>
+            <span class="pill">UI/UX</span>
+          </div>
+        </article>
+
+        <article class="item col-6 card project-card">
+          <h3>Multisite Plugin Permission Manager</h3>
+          <p>Scoped plugin management so Admins can manage a curated set on USL sites while preserving Super Admin control network‑wide.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">Multisite</span>
+            <span class="pill">Capabilities</span>
+            <span class="pill">OOP PHP</span>
+          </div>
+        </article>
+
+        <article class="item col-6 card project-card">
+          <h3>Hall of Fame CSV Import Tool</h3>
+          <p>CSV → CPT importer with taxonomy mapping and featured image download; abstract PostType class to reuse patterns across imports.</p>
+          <div class="stack" style="margin-top:8px">
+            <span class="pill">CPT</span>
+            <span class="pill">CLI/Plugin</span>
+            <span class="pill">CSV</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About</h2>
+      <div class="two-col">
+        <div class="card project-card">
+          <h3>What I do</h3>
+          <p>I build custom WordPress/Drupal solutions for enterprise teams: block systems, plugins, and migration tools that scale across multisite. I focus on maintainability, editor experience, and performance.</p>
+          <div class="stack">
+            <span class="pill">PHP</span>
+            <span class="pill">JavaScript / TypeScript</span>
+            <span class="pill">React</span>
+            <span class="pill">SCSS</span>
+            <span class="pill">GraphQL</span>
+            <span class="pill">OAuth / Security</span>
+          </div>
+        </div>
+        <div class="card project-card">
+          <h3>Selected Tech</h3>
+          <p>WordPress VIP, Drupal 9, Gutenberg, ACF, Multisite, Composer, Webpack, AWS S3, JIRA, Confluence, Litmus.</p>
+          <p style="margin-top:8px">I enjoy translating complex requirements into reusable architecture and improving editor workflows.</p>
         </div>
       </div>
     </section>
 
-    <div class="container">
-      <section id="work-section" class="work">
-        <div class="row">
-          <div class="col-sm-12">
-             <h2>Work</h2>
-             <hr class="blue">
-            <div class="work-pieces scroll-in">
-              <img class="img-responsive" src="assets/imgs/themint-guy.jpg" alt="">
-              <div class="work-cpy">
-                <h3>The Mint</h3>
-                <h4>Responsiblites</h4>
-                <p class="duties">Front end development | Wordpress intergration</p>
-                <h4>Technologies Used</h4>
-                <div>
-                  <span class="devicons devicons-html5"></span>
-                  <span class="devicons devicons-css3"></span>
-                  <span class="devicons devicons-javascript"></span>
-                  <span class="devicons devicons-jquery"></span>
-                  <span class="devicons devicons-wordpress"></span>
-                  <span class="devicons devicons-php"></span>
-                </div>
-                <a target="_blank" class="view-site" href="https://thestudiomint.com/">view site</a>
-                <a target="_blank" class="view-site" href="https://github.com/zturner2914/themint-wp">view code</a>
-              </div>
-            </div>
-            <div class="work-pieces scroll-in">
-              <img class="img-responsive" src="assets/imgs/new-triple.jpg" alt="">
-              <div class="work-cpy">
-                <h3>Triple Ink</h3>
-                <h4>Responsiblites</h4>
-                <p class="duties">Front end development | Wordpress intergration</p>
-                <h4>Technologies Used</h4>
-                <div>
-                  <span class="devicons devicons-html5"></span>
-                  <span class="devicons devicons-css3"></span>
-                  <span class="devicons devicons-javascript"></span>
-                  <span class="devicons devicons-jquery"></span>
-                  <span class="devicons devicons-wordpress"></span>
-                  <span class="devicons devicons-php"></span>
-                </div>
-                <a target="_blank" class="view-site" href="https://www.tripleink.com/">view site</a>
-                <a target="_blank" class="view-site" href="https://github.com/zturner2914/tripleink-wp">view code</a>
-              </div>
-            </div>
-            <div class="work-pieces scroll-in">
-              <img class="img-responsive" src="assets/imgs/syngenta.jpg" alt="">
-              <div class="work-cpy">
-                <h3>Syngenta Projects</h3>
-                <h4>Responsiblites</h4>
-                <p class="duties">Front end development</p>
-                <h4>Technologies Used</h4>
-                <div>
-                  <span class="devicons devicons-html5"></span>
-                  <span class="devicons devicons-css3"></span>
-                  <span class="devicons devicons-javascript"></span>
-                  <span class="devicons devicons-jquery"></span>
-                </div>
-                <a target="_blank" class="view-site" href="http://www.syngenta-us.com/home.aspx">view site</a>
-                <a target="_blank" class="view-site" href="https://github.com/zturner2914/">view code</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="work-pieces scroll-in">
-              <img class="img-responsive" src="assets/imgs/patchery.jpg" alt="">
-              <div class="work-cpy">
-                <h3>The Patchery</h3>
-                <h4>Responsiblites</h4>
-                <p class="duties">Front end development | Facebook OAuth</p>
-                <h4>Technologies Used</h4>
-                <div>
-                  <span class="devicons devicons-html5"></span>
-                  <span class="devicons devicons-css3"></span>
-                  <span class="devicons devicons-javascript"></span>
-                  <span class="devicons devicons-angular"></span>
-                  <span class="devicons devicons-mongodb"></span>
-                  <span class="devicons devicons-heroku"></span>
-                </div>
-                <a target="_blank" class="view-site" href="https://limitless-cove-3511.herokuapp.com/">view site</a>
-                <a target="_blank" class="view-site" href="https://github.com/leex3694/thePatchery">view code</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-
-    <!-- FOOTER -->
-    <footer id="contact-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <!-- <h2>Contact Me</h2> -->
-            
-            <div class="contact">
-              <p><a target="_blank" href="https://github.com/zturner2914"><img src="assets/imgs/github.png" alt=""></a></p>
-              <p><a target="_blank" href="mailto:zturner29@gmail.com"><img src="assets/imgs/gmail.png" alt=""></a></p>
-              <p><a target="_blank" href="https://www.linkedin.com/in/zachary-turner-b9834b25"><img src="assets/imgs/linkedin.png" alt=""></a></p>
-            </div>
-          </div>
-        </div>
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="card project-card">
+        <p>Denver, CO · <a href="mailto:zturner29@gmail.com">zturner29@gmail.com</a></p>
+        <p>
+          <a class="btn" href="https://www.linkedin.com/in/zachary-turner-b9834b25/">LinkedIn</a>
+          <a class="btn" href="https://github.com/zturner2914">GitHub</a>
+          <a class="btn" href="Zachary_Turner_Resume_2025_with_short_summary.pdf">Download Resume</a>
+        </p>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <script src="assets/js/jquery-3.1.0.min.js"></script>
-  	<script src="assets/js/main.js"></script>
-    <script src="assets/js/is-visible.js"></script>
+  <footer class="wrap">
+    <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+  </footer>
 
-  </body>
+  <script> document.getElementById('y').textContent = new Date().getFullYear(); </script>
+</body>
 </html>
