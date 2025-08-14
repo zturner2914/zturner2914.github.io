@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case Study · Drupal → WordPress Migration · Zach Turner</title>
+    <meta name="description" content="How we migrated nested Drupal components into Gutenberg blocks across multisite." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+    <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- IMPORTANT: relative path from /case-studies/ -->
+    <link rel="stylesheet" href="../assets/css/stylesheet.css" />
+
+    <style>
+      /* Page-specific layout only (everything else comes from your shared CSS) */
+      .cs-hero h1 { margin: .35em 0; }
+      .cs-meta { color: var(--muted); }
+      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
+
+      /* Optional: match code blocks with site aesthetic */
+      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" role="banner">
+      <div class="wrap nav-inner">
+        <div class="brand"><span class="dot" aria-hidden="true"></span> Zach Turner</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#contact">Contact</a>
+          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content">
+      <section class="section cs-hero">
+        <div class="kicker">Case Study</div>
+        <h1>Drupal → WordPress Block Migration</h1>
+        <p class="cs-meta">WordPress VIP · Drupal 9 · Gutenberg · Multisite</p>
+      </section>
+
+      <section class="section">
+        <h2>Problem</h2>
+        <div class="card project-card">
+          <p>We needed to migrate nested Drupal components into Gutenberg blocks across multiple brands without breaking layouts or editor workflows.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Approach</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li>Multisite‑aware page discovery via <code>drupal.nid</code> postmeta</li>
+            <li>Recursive traversal with depth limits and integrity checks</li>
+            <li>Bundle‑keyed SQL catalog + site‑specific query switching</li>
+            <li>Field normalization (bool/int/float/class) into block attributes</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet</h2>
+        <div class="card project-card">
+            <p>
+            This method drives the entire nested component migration process. It recursively traverses
+            Drupal’s component tree (depth-limited to avoid infinite loops), queries each child node’s
+            metadata, skips unpublished or invalid items, and merges normalized field data into
+            a Gutenberg-ready array. The recursion ensures that deeply nested layouts are preserved
+            in WordPress without breaking editor workflows.
+            </p>
+            <pre><code class="language-php">
+            // Depth-limited recursion, skip missing/unpublished
+            function get_components(int $nid, int $depth = 0): array {
+                if ($depth > 2) return [];
+                $rows = $this->drupalConnection->do_query($components_query, [$nid]);
+                if (empty($rows[0]->field_components_target_id)) return [];
+                foreach ($rows as $row) {
+                    $meta = $this->drupalConnection->do_query(
+                        "SELECT type, status FROM node_field_data WHERE nid=%d", 
+                        [(int)$row->field_components_target_id]
+                    );
+                    if (empty($meta[0]->type) || empty($meta[0]->status)) continue;
+                    $components[] = array_merge(
+                        $this->get_fields((int)$row->field_components_target_id, $meta[0]->type),
+                        ['children' => $this->get_components((int)$row->field_components_target_id, $depth + 1)]
+                    );
+                }
+                return $components;
+            }
+            </code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+  <h2>Key Snippet – Carousel Mapping</h2>
+  <div class="card project-card">
+    <p>
+      This excerpt from <code>parse_to_block()</code> maps Drupal’s
+      <strong>carousel</strong> component to a Gutenberg block. It normalizes taxonomy and page
+      selections, preserves the original order of child slides, and outputs valid
+      WordPress block comment markup that the editor can read. This logic ensured
+      that all migrated carousels looked identical to their Drupal counterparts while
+      remaining fully editable in Gutenberg.
+    </p>
+    <pre><code class="language-php">
+// Drupal "carousel" → Gutenberg <!-- wp:cet/carousel {…} -->
+case ALLOWED_COMPONENTS::CAROUSEL->value:
+    // 1) Normalize taxonomy + page selections
+    ['categories' => $selectedCategories] = $this->getComponentSelectedCategories($component);
+
+    $selectedPages = [];
+    if ($this->value_if_key_exists($component, 'component_ids')) {
+        $ids = array_values(array_unique(array_map('intval', explode(',', $component['component_ids']))));
+        $map = $this->match_nid_to_the_post_id($ids, true) ?? [];
+        $nidToPost = [];
+        foreach ($map as $m) { $nidToPost[$m->nid] = $m->post_id; }
+        foreach ($ids as $nid) { if (isset($nidToPost[$nid])) $selectedPages[] = $nidToPost[$nid]; }
+    }
+
+    // 2) Build block attributes
+    $attrs = [
+        'body'                        => $this->getComponentBodyPrepared($component),
+        'carouselDisplayCount'        => $this->value_if_key_exists($component, 'carouselDisplayCount'),
+        'carouselElementsMobileHide'  => $this->value_if_key_exists($component, 'carouselElementsMobileHide'),
+        'carouselEmphasisEnable'      => $this->value_if_key_exists($component, 'carouselEmphasisEnable'),
+        'carouselEnableModernDisplay' => $this->value_if_key_exists($component, 'carouselEnableModernDisplay'),
+        'carouselStartPosition'       => $this->value_if_key_exists($component, 'carouselStartPosition'),
+        'categoryParentPageInclude'   => $this->value_if_key_exists($component, 'categoryParentPageInclude'),
+        'colorBackground'             => $this->value_if_key_exists($component, 'colorBackground'),
+        'pageAggregationMatchLogic'   => $this->value_if_key_exists($component, 'pageAggregationMatchLogic'),
+        'pageDisplayType'             => array_filter(explode(',', (string)$this->value_if_key_exists($component, 'pageDisplayType'))),
+        'pageRandomize'               => $this->value_if_key_exists($component, 'pageRandomize'),
+        'urlViewMore'                 => $this->transformDrupalSpecialPathToTheUrl(
+                                           $this->value_if_key_exists($component, 'urlViewMore'), 'Carousel'),
+        'urlViewMoreTitle'            => $this->value_if_key_exists($component, 'urlViewMoreTitle'),
+        'selectedCategories'          => $selectedCategories,
+        'selectedPages'               => array_values(array_unique($selectedPages)),
+    ];
+
+    // 3) Render children inside the block (order preserved)
+    $child = $this->parse_child_blocks($component, $depth)['children'];
+
+    // 4) Emit block comment markup
+    $attributes = json_encode($attrs);
+    $content   .= str_repeat(" ", $depth) . "<!-- wp:cet/carousel {$attributes} -->";
+    $content   .= $child;
+    $content   .= "\n" . str_repeat(" ", $depth) . "<!-- /wp:cet/carousel -->";
+    break;
+    </code></pre>
+  </div>
+</section>
+
+
+      <section class="section">
+        <h2>Mapping (Drupal → Gutenberg)</h2>
+        <div class="card project-card">
+          <div class="props-grid">
+            <div><strong>Drupal</strong><br><code>field_display_title</code></div>
+            <div><strong>WP Block</strong><br><code>attributes.displayTitle</code></div>
+            <div><strong>Drupal</strong><br><code>field_remove_padding</code></div>
+            <div><strong>WP Block</strong><br><code>attributes.paddingRemove: boolean</code></div>
+            <div><strong>Drupal</strong><br><code>field_content_display</code></div>
+            <div><strong>WP Block</strong><br><code>className: is-style-*</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="results-heading">
+        <h2 id="results-heading">Results</h2>
+        <div class="card project-card">
+          <p>
+            Successfully migrated all targeted content and structure — including pages, posts, images, internal URLs, navigation menus, and taxonomies — with full parity to the Drupal source and verified editor workflows.
+          </p>
+          <ul class="colored">
+            <li>Preserved layout integrity with order-aware, depth-limited traversal</li>
+            <li>Automatically updated internal links and applied 301 redirects for SEO continuity</li>
+            <li>Validated migration through spot checks, menu/taxonomy diffs, and media checksum sampling</li>
+          </ul>
+        </div>
+      </section>
+
+
+      <section class="section">
+        <h2>Recording & Links</h2>
+        <div class="card project-card">
+          <p>
+            <a class="btn" href="#">Watch 3‑min overview</a>
+            <a class="btn" href="#">View repo / gist</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+    </footer>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+
+  </body>
+</html>
