@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zach Turner – Portfolio</title>
-  <meta name="description" content="Front‑end developer portfolio – WordPress VIP, Drupal migrations, custom Gutenberg blocks, and enterprise plugins." />
+  <meta name="description" content="Front-end developer portfolio – WordPress VIP, Drupal migrations, custom Gutenberg blocks, and enterprise plugins." />
   <meta property="og:title" content="Zach Turner – Portfolio" />
   <meta property="og:description" content="WordPress VIP · Drupal · Gutenberg · Enterprise plugins" />
   <meta property="og:type" content="website" />
@@ -32,7 +32,7 @@
    <main class="wrap" id="main-content">
       <section class="hero">
         <div>
-          <div class="kicker">Front‑End Developer</div>
+          <div class="kicker">Front-End Developer</div>
         <h1>Front-End Developer · Scalable Web Solutions</h1>
         <p class="lead">
           While I have extensive experience delivering enterprise-grade WordPress VIP and Drupal platforms, my work spans far beyond CMS development — creating scalable plugins, custom UI components, API integrations, and performance-focused architectures across diverse stacks and tools.
@@ -51,7 +51,7 @@
           <h3 style="margin-top:0">Highlights</h3>
           <ul class="colored">
             <li>Drupal ➜ WordPress migration plugin (media, taxonomies, embeds)</li>
-            <li>Programs Carousel block (geo‑aware, SSR, ad slot)</li>
+            <li>Programs Carousel block (geo-aware, SSR, ad slot)</li>
             <li>Nested “Dresser/Drawer” layout block system</li>
             <li>Geolocation Search widget (typeahead, API integration)</li>
             <li>Multisite plugin permission manager (USL sites)</li>
@@ -64,10 +64,8 @@
         <div class="grid projects">
           <article class="item col-6 card project-card">
             <h3>Drupal → WordPress Migration Plugin</h3>
-            <p>Automated migration of nodes, media, and taxonomies from Drupal into block‑based WordPress content. Replaced &lt;drupal-entity&gt; embeds with media‑safe HTML and mapped categories.</p>
-            <p><strong>Quick look:</strong> Recursive component traversal ensures nested blocks migrate in order, skipping unpublished/missing nodes.</p>
+            <p>Automated migration of nodes, media, and taxonomies from Drupal into block-based WordPress content. Replaced &lt;drupal-entity&gt; embeds with media-safe HTML and mapped categories. Recursive traversal preserves nested order and skips unpublished/missing nodes.</p>
             <p>
-              <button class="btn btn-ghost" data-modal="migration">Open quick look</button>
               <a class="btn" href="case-studies/migration.html">Full case study</a>
             </p>
             <div class="stack" style="margin-top:8px">
@@ -79,12 +77,10 @@
             <p style="margin-top:10px"><strong>Impact:</strong> Cut migration time and standardized content models across sites.</p>
           </article>
 
-          <!-- REPLACED: Navigation Carousel card -> Programs Carousel card -->
           <article class="item col-6 card project-card">
             <h3>Programs Carousel (Gutenberg, SSR)</h3>
-            <p>Server‑rendered carousel that surfaces location‑relevant programs using geo data from a cookie. Optionally merges page categories with editor‑selected categories, exposes neutral hooks for the data layer, and supports an ad slot without breaking layout.</p>
+            <p>Server-rendered carousel that surfaces location-relevant programs using geo data from a cookie. Optionally merges page categories with editor-selected categories, exposes neutral hooks for the data layer, and supports an ad slot without breaking layout.</p>
             <p>
-              <button class="btn btn-ghost" data-modal="programs">Open quick look</button>
               <a class="btn" href="case-studies/programs-carousel.html">Full case study</a>
             </p>
             <div class="stack" style="margin-top:8px">
@@ -93,12 +89,15 @@
               <span class="pill">PHP</span>
               <span class="pill">API</span>
             </div>
-            <p style="margin-top:10px"><strong>Impact:</strong> Faster first paint, portable integration, and editor‑friendly controls.</p>
+            <p style="margin-top:10px"><strong>Impact:</strong> Faster first paint, portable integration, and editor-friendly controls.</p>
           </article>
 
           <article class="item col-6 card project-card">
             <h3>Dresser / Drawer Nested Blocks</h3>
-            <p>Parent/child block system enabling editors to assemble complex layouts. OOP architecture, attributes persistence, and editor‑friendly controls.</p>
+            <p>Parent/child block system enabling editors to assemble complex layouts. OOP architecture, attributes persistence, and editor-friendly controls.</p>
+            <p>
+              <a class="btn" href="case-studies/dresser.html">Full case study</a>
+            </p>
             <div class="stack" style="margin-top:8px">
               <span class="pill">Gutenberg</span>
               <span class="pill">React</span>
@@ -106,19 +105,14 @@
             </div>
           </article>
 
-          <article class="item col-6 card project-card">
-            <h3>Geolocation Search widget</h3>
-            <p>Typeahead input calling <code>/locations/suggest</code> after the 3rd character; stores <code>postal_code</code>, <code>lat</code>, and <code>lon</code> for downstream UX. Secure nonce verification.</p>
-            <div class="stack" style="margin-top:8px">
-              <span class="pill">API</span>
-              <span class="pill">Security</span>
-              <span class="pill">UI/UX</span>
-            </div>
-          </article>
+         
 
           <article class="item col-6 card project-card">
             <h3>Multisite Plugin Permission Manager</h3>
-            <p>Scoped plugin management so Admins can manage a curated set on USL sites while preserving Super Admin control network‑wide.</p>
+            <p>Scoped plugin management so Admins can manage a curated set on USL sites while preserving Super Admin control network-wide.</p>
+            <p>
+              <a class="btn" href="case-studies/permission-manager.html">Full case study</a>
+            </p>
             <div class="stack" style="margin-top:8px">
               <span class="pill">Multisite</span>
               <span class="pill">Capabilities</span>
@@ -126,13 +120,27 @@
             </div>
           </article>
 
+          <!-- REPLACED: Hall of Fame CSV Import Tool -> Aggregation Plugin (Pages) -->
           <article class="item col-6 card project-card">
-            <h3>Hall of Fame CSV Import Tool</h3>
-            <p>CSV → CPT importer with taxonomy mapping and featured image download; abstract PostType class to reuse patterns across imports.</p>
+            <h3>Aggregation Plugin (Pages)</h3>
+            <p>Taxonomy-aware aggregation for Pages: split “article type” vs. regular categories with <code>any</code>/<code>all</code> logic, exclude special categories, and return a normalized model (sponsor, sport, featured flags) for the UI. Ships a REST endpoint that provides hierarchical category options and lookup tables for the editor.</p>
+            <p>
+              <a class="btn" href="case-studies/aggregation.html">Full case study</a>
+            </p>
             <div class="stack" style="margin-top:8px">
-              <span class="pill">CPT</span>
-              <span class="pill">CLI/Plugin</span>
-              <span class="pill">CSV</span>
+              <span class="pill">WP_Query</span>
+              <span class="pill">REST</span>
+              <span class="pill">Taxonomy</span>
+            </div>
+          </article>
+
+           <article class="item col-6 card project-card">
+            <h3>Geolocation Search widget</h3>
+            <p>Typeahead input calling <code>/locations/suggest</code> after the 3rd character; stores <code>postal_code</code>, <code>lat</code>, and <code>lon</code> for downstream UX. Secure nonce verification.</p>
+            <div class="stack" style="margin-top:8px">
+              <span class="pill">API</span>
+              <span class="pill">Security</span>
+              <span class="pill">UI/UX</span>
             </div>
           </article>
         </div>
@@ -172,88 +180,6 @@
           </p>
         </div>
       </section>
-    
-    <!-- Quick Look Modal: Migration -->
-    <dialog class="modal" id="modal-migration">
-      <form method="dialog" class="modal__surface card">
-        <header class="modal__header">
-          <strong>Drupal → WordPress Migration · Quick look</strong>
-        </header>
-        <div class="modal__body">
-          <p>This function walks nested Drupal components, preserves editor order, and filters out unpublished/missing nodes. Depth limit prevents runaway recursion.</p>
-          <pre><code class="language-php">// Depth-limited recursion, order preserved, invalid nodes skipped
-function get_components(int $nid, int $depth = 0): array {
-    if ($depth > 2) return [];
-    $query = /* brand-specific SQL via SELECTED_SITE_ID */ $components_query;
-    $rows = $this->drupalConnection->do_query($query, [$nid]);
-    if (empty($rows[0]->field_components_target_id)) return [];
-
-    $components = [];
-    foreach ($rows as $row) {
-        $id = (int)$row->field_components_target_id;
-        $meta = $this->drupalConnection->do_query("SELECT type, status FROM node_field_data WHERE nid=%d;", [$id]);
-        if (empty($meta[0]->type) || empty($meta[0]->status)) {
-            // orphan/disabled → skip, optionally log
-            continue;
-        }
-        $components[] = array_merge(
-            $this->get_fields($id, $meta[0]->type),
-            [
-                'nid' => $id,
-                'type' => $meta[0]->type,
-                'status' => (bool)$meta[0]->status,
-                'children' => $this->get_components($id, $depth + 1),
-            ]
-        );
-    }
-    return $components;
-}
-</code></pre>
-        </div>
-        <footer class="modal__footer">
-          <a class="btn" href="/case-studies/migration.html">Full case study</a>
-          <button class="btn" value="close" aria-label="Close">Close</button>
-        </footer>
-      </form>
-    </dialog>
-
-    <!-- Quick Look Modal: Programs Carousel -->
-    <dialog class="modal" id="modal-programs">
-      <form method="dialog" class="modal__surface card">
-        <header class="modal__header">
-          <strong>Programs Carousel (Gutenberg, SSR) · Quick look</strong>
-        </header>
-        <div class="modal__body">
-          <p>Geo‑aware, server‑rendered carousel with taxonomy merging and clean integration hooks.</p>
-          <pre><code class="language-php">// Cookie → query → results (neutral hooks)
-$cookie_key = apply_filters('programs_carousel/location_cookie_key', 'location_data');
-$loc = isset($_COOKIE[$cookie_key]) ? json_decode(stripslashes($_COOKIE[$cookie_key]), true) : null;
-
-$params = [
-  'lat' => $loc['latitude'] ?? '',
-  'lon' => $loc['longitude'] ?? '',
-  'postal_code' => $loc['zipcode'] ?? '',
-  'distance' => (int)($attributes['distance'] ?? 0),
-  'listing_type' => sanitize_text_field($attributes['listingType'] ?? ''),
-  'per_page' => 12,
-];
-
-$cats = $attributes['selectedCategories'] ?? [];
-if (!empty($attributes['categoryParentPageInclude'])) {
-  $defaultIds = array_map(fn($c) => $c->term_id, get_the_category(get_the_ID()) ?: []);
-  $cats = array_unique(array_merge($defaultIds, $cats));
-}
-
-$params = apply_filters('programs_carousel/augment_query_with_categories', $params, $cats);
-$programs = apply_filters('programs_carousel/fetch_programs', $params);</code></pre>
-        </div>
-        <footer class="modal__footer">
-          <a class="btn" href="/case-studies/programs-carousel.html">Full case study</a>
-          <button class="btn" value="close" aria-label="Close">Close</button>
-        </footer>
-      </form>
-    </dialog>
-
   </main>
 
     <footer class="wrap">
@@ -275,25 +201,6 @@ $programs = apply_filters('programs_carousel/fetch_programs', $params);</code></
       }
       window.addEventListener('hashchange', updateAriaCurrent);
       window.addEventListener('DOMContentLoaded', updateAriaCurrent);
-    </script>
-    <script>
-      // Quick look modal wiring (native & accessible)
-      (function(){
-        const dlgMap = new Map();
-        document.querySelectorAll('dialog.modal').forEach(d => dlgMap.set(d.id.replace('modal-',''), d));
-        document.addEventListener('click', (e) => {
-          const trigger = e.target.closest('[data-modal]');
-          if (trigger) {
-            const key = trigger.getAttribute('data-modal');
-            const dlg = dlgMap.get(key);
-            if (dlg) dlg.showModal();
-          }
-        });
-        document.querySelectorAll('dialog.modal').forEach(dlg => {
-          dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-          dlg.addEventListener('cancel', (e) => { e.preventDefault(); dlg.close(); });
-        });
-      })();
     </script>
 </body>
 </html>

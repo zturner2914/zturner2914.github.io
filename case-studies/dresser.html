@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case Study · Dresser / Drawer Nested Blocks · Zach Turner</title>
+    <meta name="description" content="Parent/child Gutenberg blocks: a Dresser container that renders nested Drawer blocks with optional expandable content." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+
+    <!-- Prism.js theme (okaidia: high contrast in dark, readable in light) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- IMPORTANT: relative path from /case-studies/ -->
+    <link rel="stylesheet" href="../assets/css/stylesheet.css" />
+
+    <style>
+      /* Page-specific layout only (everything else comes from your shared CSS) */
+      .cs-hero h1 { margin: .35em 0; }
+      .cs-meta { color: var(--muted); }
+      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
+
+      /* Code blocks match site aesthetic */
+      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" role="banner">
+      <div class="wrap nav-inner">
+        <div class="brand"><span class="dot" aria-hidden="true"></span> Zach Turner</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#contact">Contact</a>
+          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content">
+      <section class="section cs-hero">
+        <div class="kicker">Case Study</div>
+        <h1>Dresser / Drawer · Nested Gutenberg Blocks</h1>
+        <p class="cs-meta">WordPress · Gutenberg · Parent/Child Architecture</p>
+      </section>
+
+      <section class="section">
+        <h2>Problem</h2>
+        <div class="card project-card">
+          <p>
+            Editors needed a flexible, reusable pattern to present titled sections that can optionally expand
+            to reveal content—while keeping layout consistent and editable. The solution had to support a
+            **parent container** that accepts free-form body/disclaimer content and a **set of child items**
+            (drawers) the editor can add, order, and configure directly in Gutenberg.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Approach</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li><strong>Parent/Child blocks:</strong> <em>Dresser</em> (parent) renders its own body and the nested <em>Drawer</em> children.</li>
+            <li><strong>Composable content:</strong> Each Drawer can be a simple header or include body content to expand.</li>
+            <li><strong>Clean rendering:</strong> Server-side render callbacks output safe, semantic HTML with class hooks.</li>
+            <li><strong>Editor control:</strong> Child blocks are orderable, and the parent can position its body left/right.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Parent renders children</h2>
+        <div class="card project-card">
+          <p>
+            The **Dresser** block acts as the parent container. It renders optional intro/disclaimer text and then
+            outputs the child block markup via <code>$content</code>—the canonical way to render nested blocks on the server.
+          </p>
+<pre><code class="language-php">&lt;?php
+$colorBackground = ! empty( $attributes['colorBackground'] ) ? sanitize_title( $attributes['colorBackground'] ) : '';
+$paddingRemove   = ! empty( $attributes['paddingRemove'] )   ? sanitize_title( $attributes['paddingRemove'] )   : '';
+$body            = ! empty( $attributes['body'] )            ? wp_kses_post( $attributes['body'] )             : '';
+$disclaimer      = ! empty( $attributes['disclaimer'] )      ? wp_kses_post( $attributes['disclaimer'] )       : '';
+$bodyLeftRight   = 'order-0 text-start';
+if ( ! empty( $attributes['bodyLeftRight'] ) &amp;&amp; $attributes['bodyLeftRight'] === 'body-right' ) {
+  $bodyLeftRight = 'order-2 text-end';
+}
+?&gt;
+
+&lt;div &lt;?php echo get_block_wrapper_attributes(); ?&gt;&gt;
+  &lt;div class="block-dresser px-3 d-flex w-100 mx-auto align-items-center flex-column &lt;?php echo esc_attr( $colorBackground . ' ' . $paddingRemove ); ?&gt;"&gt;
+    &lt;div class="container"&gt;
+      &lt;div class="w-100 mx-auto"&gt;
+        &lt;div class="row w-100"&gt;
+          &lt;?php if ( ! empty( $body ) ) : ?&gt;
+            &lt;div class="col-xs-12 col-md-4 contrast-content text-editor &lt;?php echo esc_attr( $bodyLeftRight ); ?&gt;"&gt;
+              &lt;?php echo $body; ?&gt;
+            &lt;/div&gt;
+          &lt;?php endif; ?&gt;
+
+          &lt;div class="contrast-content col-xs-12 col-md-8 field-components accordion my-0 mx-auto"&gt;
+            &lt;?php
+              // 🔑 Render nested child blocks (Drawers) here
+              echo ! empty( $content ) ? $content : '';
+            ?&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;?php if ( ! empty( $disclaimer ) ) : ?&gt;
+          &lt;div class="row contrast-content disclaimer"&gt;
+            &lt;?php echo $disclaimer; ?&gt;
+          &lt;/div&gt;
+        &lt;?php endif; ?&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Child block (Drawer)</h2>
+        <div class="card project-card">
+          <p>
+            A **Drawer** displays a title row and conditionally renders its body. If there’s no body, it becomes a
+            non-expandable header. If body content exists, an arrow icon is shown and the content renders in an inner
+            container—perfect for an accordion-style pattern.
+          </p>
+<pre><code class="language-php">&lt;?php
+$colorText      = ! empty( $attributes['colorText'] )   ? sanitize_title( $attributes['colorText'] )   : '';
+$displayTitle   = ! empty( $attributes['displayTitle'] )? sanitize_text_field( $attributes['displayTitle'] ) : '';
+$content        = ! empty( $attributes['body'] )        ? wp_kses_post( $attributes['body'] )          : '';
+$nonContentFlag = empty( $content ) ? 'non-content-drawer' : '';
+?&gt;
+
+&lt;div &lt;?php echo get_block_wrapper_attributes(); ?&gt;&gt;
+  &lt;div class="block-drawer &lt;?php echo esc_attr( $nonContentFlag ); ?&gt;" data-drawer-block-container&gt;
+    &lt;div class="row title py-2 &lt;?php echo esc_attr( $colorText ); ?&gt;"&gt;
+      &lt;div class="col-xs-12"&gt;
+        &lt;h4&gt;
+          &lt;?php echo esc_html( $displayTitle ); ?&gt;
+          &lt;?php if ( $content ) : ?&gt;
+            &lt;i class="arrow fas fa-chevron-right position-absolute"&gt;&lt;/i&gt;
+          &lt;?php endif; ?&gt;
+        &lt;/h4&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;?php if ( $content ) : ?&gt;
+      &lt;div class="row drawer-body"&gt;
+        &lt;div class="body col-xs-12 text-editor"&gt;
+          &lt;?php echo $content; ?&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;?php endif; ?&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Editor Experience & Structure</h2>
+        <div class="card project-card">
+          <div class="props-grid">
+            <div><strong>Parent</strong><br><code>blocks/.../dresser</code></div>
+            <div><strong>Children</strong><br><code>blocks/.../drawer</code> (repeatable, orderable)</div>
+
+            <div><strong>Parent fields</strong><br><code>body</code>, <code>disclaimer</code>, <code>bodyLeftRight</code>, <code>colorBackground</code>, <code>paddingRemove</code></div>
+            <div><strong>Child fields</strong><br><code>displayTitle</code>, <code>body</code>, <code>colorText</code></div>
+
+            <div><strong>Nesting</strong><br>Rendered via server-side <code>$content</code> inside the parent.</div>
+            <div><strong>Behavior</strong><br>Drawer auto-detects “non-content” mode when body is empty.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="results-heading">
+        <h2 id="results-heading">Results</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li>Reusable, editor-friendly accordion-style UI composed entirely of blocks</li>
+            <li>Clean separation of concerns: parent layout vs. child content</li>
+            <li>Safe, server-rendered HTML with predictable class hooks for styling</li>
+            <li>Flexible alignment and copy placement for varied page layouts</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Recording & Links</h2>
+        <div class="card project-card">
+          <p>
+            <a class="btn" href="#">Watch 2-min overview</a>
+            <a class="btn" href="#">View repo / gist</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+    </footer>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+  </body>
+</html>

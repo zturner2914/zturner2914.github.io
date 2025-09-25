@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case Study · Aggregation Plugin (Pages) · Zach Turner</title>
+    <meta name="description" content="Taxonomy-aware aggregation for Pages: splits article-type vs. tag categories with any/all logic, excludes special categories, normalizes output (sponsor, sport, featured), and exposes a REST category API with hierarchy and lookup tables." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+
+    <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- IMPORTANT: relative path from /case-studies/ -->
+    <link rel="stylesheet" href="../assets/css/stylesheet.css" />
+
+    <style>
+      /* Page-specific layout only (everything else comes from your shared CSS) */
+      .cs-hero h1 { margin: .35em 0; }
+      .cs-meta { color: var(--muted); }
+      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
+
+      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" role="banner">
+      <div class="wrap nav-inner">
+        <div class="brand"><span class="dot" aria-hidden="true"></span> Zach Turner</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#contact">Contact</a>
+          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content">
+      <section class="section cs-hero">
+        <div class="kicker">Case Study</div>
+        <h1>Aggregation Plugin · Pages</h1>
+        <p class="cs-meta">WordPress · WP_Query · REST · Taxonomy Modeling</p>
+      </section>
+
+      <section class="section">
+        <h2>Problem</h2>
+        <div class="card project-card">
+          <p>
+            Build a reusable “pages aggregator” that can pull content by categories with nuanced logic:
+            <strong>exclude</strong> certain categories globally, treat <em>article type</em> categories differently from other tags,
+            honor <code>any</code>/<code>all</code> match modes, and output a <strong>UI-ready model</strong> (sponsor, sport, featured flags).
+            Editors also need a REST endpoint that returns <strong>hierarchical category options</strong> and <strong>lookup tables</strong> for fast mapping in the UI.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Approach</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li><strong>Taxonomy-aware query builder:</strong> split article-type vs. regular categories; support <code>any</code>/<code>all</code> match.</li>
+            <li><strong>Global exclusions:</strong> filter out special categories before querying.</li>
+            <li><strong>Normalized view model:</strong> sponsor logo/link, sport image/name, article type, featured flags.</li>
+            <li><strong>Editor API:</strong> REST payload with label/value, hierarchy, and O(1) lookup tables.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Taxonomy-aware query builder</h2>
+        <div class="card project-card">
+          <p>
+            Core logic from <code>PagesAggregationHandler::fetch_pages_by_categories()</code>: exclude a special category,
+            split “article type” terms, and compose a precise <code>tax_query</code> honoring <code>any</code>/<code>all</code>.
+          </p>
+<pre><code class="language-php">$category_ids = array_values(array_diff($category_ids, [$this-&gt;sportsengine_term_id])); // exclude special
+
+$args = [
+  'post_type'      =&gt; 'page',
+  'posts_per_page' =&gt; $per_page,
+  'orderby'        =&gt; $orderby,
+  'order'          =&gt; $order,
+  'post__in'       =&gt; $include_posts,
+  'post__not_in'   =&gt; $exclude_posts,
+  'post_status'    =&gt; 'publish',
+  'meta_key'       =&gt; 'exclude_from_aggregation',
+  'meta_value'     =&gt; 0,
+];
+
+// Split "article type" categories from the rest
+$article_ids       = array_values(array_intersect($this-&gt;all_article_type_ids, $category_ids));
+$only_category_ids = array_values(array_diff($category_ids, $article_ids));
+
+$tax_query = [];
+if (!empty($article_ids)) {
+  $tax_query = [
+    'relation' =&gt; 'AND',
+    [
+      'taxonomy' =&gt; 'category',
+      'field'    =&gt; 'term_id',
+      'terms'    =&gt; $article_ids,
+      'operator' =&gt; 'IN',
+    ],
+  ];
+}
+
+if (!empty($only_category_ids)) {
+  $tax_query[] = [
+    'taxonomy'         =&gt; 'category',
+    'field'            =&gt; 'term_id',
+    'terms'            =&gt; $only_category_ids,
+    'include_children' =&gt; false,
+    'operator'         =&gt; ($matchLogic === 'all') ? 'AND' : 'IN',
+  ];
+}
+
+$args['tax_query'] = $tax_query;
+$query = new WP_Query($args);</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Normalized output model</h2>
+        <div class="card project-card">
+          <p>
+            From <code>prepare_page_data()</code>: shape each page into a single, UI-friendly object with sponsor, sport, article type, featured flags, and images.
+          </p>
+<pre><code class="language-php">$id         = get_the_ID();
+$categories = wp_get_post_categories($id);
+
+// Sponsor (taxonomy → logo/link)
+$sponsor_parent   = get_category_by_slug('sponsor');
+$sponsor_term_ids = [];
+if ($sponsor_parent) {
+  $all_sponsors     = get_term_children($sponsor_parent-&gt;term_id, 'category');
+  $sponsor_term_ids = array_values(array_intersect($categories, $all_sponsors));
+}
+$sponsor = null;
+if (!empty($sponsor_term_ids)) {
+  $sponsor_id = $sponsor_term_ids[0];
+  $logo_id    = get_term_meta($sponsor_id, 'logo_media', true);
+  $logo_url   = wp_get_attachment_image_url($logo_id, 'thumbnail');
+  if ($logo_url) {
+    $sponsor = [
+      'name'       =&gt; get_term($sponsor_id)-&gt;name,
+      'logo'       =&gt; $logo_url,
+      'url'        =&gt; get_field('url', 'category_' . $sponsor_id),
+      'url_title'  =&gt; get_field('url_title', 'category_' . $sponsor_id),
+      'url_target' =&gt; get_field('url_target', 'category_' . $sponsor_id),
+    ];
+  }
+}
+
+// Sport (taxonomy → image)
+$sport_parent = get_category_by_slug('sport');
+$sport_data   = null;
+if ($sport_parent) {
+  $all_sports = get_term_children($sport_parent-&gt;term_id, 'category');
+  $sport_ids  = array_values(array_intersect($categories, $all_sports));
+  if (!empty($sport_ids)) {
+    $sport_id  = $sport_ids[0];
+    $media_url = get_term_meta($sport_id, 'media', true);
+    if ($media_url) $sport_data = ['name' =&gt; get_term($sport_id)-&gt;name, 'image' =&gt; $media_url];
+  }
+}
+
+// Article type + featured flags
+$article_ids  = array_values(array_intersect($this-&gt;all_article_type_ids, $categories));
+$article_term = empty($article_ids) ? null : get_term_by('id', $article_ids[0], 'category');
+$article_type = $article_term ? $article_term-&gt;slug : null;
+
+$is_featured_sports = ($this-&gt;featured_sports_term_id &amp;&amp; in_array($this-&gt;featured_sports_term_id, $categories))
+  || !empty(array_intersect($categories, $this-&gt;all_drills)); // “Drills” treated as featured
+
+return [
+  'id'                   =&gt; $id,
+  'title'                =&gt; get_the_title($id),
+  'excerpt'              =&gt; ($e = get_post_field('post_excerpt', $id)) ?: null,
+  'url'                  =&gt; get_permalink($id),
+  'featured_image_url'   =&gt; get_the_post_thumbnail_url($id),
+  'featured_image_alt'   =&gt; get_post_meta(get_post_thumbnail_id($id), '_wp_attachment_image_alt', true),
+  'publish_date'         =&gt; get_the_date(null, $id),
+  'sponsor'              =&gt; $sponsor,
+  'sport'                =&gt; $sport_data,
+  'article_type'         =&gt; $article_type,
+  'is_featured_sports'   =&gt; $is_featured_sports,
+  'sport_card_image_url' =&gt; (($img = get_field('sport_card_image', $id)) ? wp_get_attachment_image_url($img, 'full') : null),
+];</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Category API for the editor</h2>
+        <div class="card project-card">
+          <p>
+            From <code>CategoriesHandler::get_categories()</code>: REST payload includes hierarchy strings and two lookup tables for fast two-way mapping.
+          </p>
+<pre><code class="language-php">$terms = get_terms([
+  'taxonomy'   =&gt; 'category',
+  'hide_empty' =&gt; false,
+  'number'     =&gt; 0,
+  'fields'     =&gt; 'all',
+]);
+
+$categoryOptions = [];
+foreach ($terms as $term) {
+  $categoryOptions[] = [
+    'label'     =&gt; $term-&gt;name,
+    'value'     =&gt; $term-&gt;term_id,
+    'hierarchy' =&gt; substr(get_category_parents($term-&gt;term_id, false, ' -&gt; '), 0, -4),
+  ];
+}
+
+$labelToId = [];
+$idToLabel = [];
+foreach ($categoryOptions as $opt) {
+  $labelToId[$opt['hierarchy']] = $opt['value']; // "Sport -&gt; Hockey" =&gt; 123
+  $idToLabel[$opt['value']]     = $opt['hierarchy']; // 123 =&gt; "Sport -&gt; Hockey"
+}
+
+return rest_ensure_response([
+  'categories'   =&gt; $categoryOptions,
+  'lookupTables' =&gt; [
+    'labelToId' =&gt; $labelToId,
+    'idToLabel' =&gt; $idToLabel,
+  ],
+]);</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Endpoints & Extensibility</h2>
+        <div class="card project-card">
+          <div class="props-grid">
+            <div><strong>Fetch by categories</strong><br><code>fetch_pages_by_categories($category_ids, $order, $exclude, $matchLogic='any', $per_page=12)</code></div>
+            <div><strong>Fetch by IDs</strong><br><code>fetch_pages_by_ids($page_ids)</code></div>
+
+            <div><strong>Count (categories)</strong><br><code>count_pages_by_categories($category_ids, $order, $exclude=[], $matchLogic='any')</code></div>
+            <div><strong>Editor data</strong><br><code>CategoriesHandler::get_categories()</code> (hierarchy + lookup tables)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="results-heading">
+        <h2 id="results-heading">Results</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li>Consistent, fast aggregation with precise taxonomy semantics (<code>any</code>/<code>all</code>, exclusions).</li>
+            <li>UI-ready output model (sponsor, sport, featured, images) reduces template complexity.</li>
+            <li>Better editor UX via hierarchical category options and instant lookups.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Recording & Links</h2>
+        <div class="card project-card">
+          <p>
+            <a class="btn" href="#">Watch 2-min overview</a>
+            <a class="btn" href="#">View repo / gist</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+    </footer>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+  </body>
+</html>

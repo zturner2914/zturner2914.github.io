@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case Study · Multisite Plugin Permission Manager · Zach Turner</title>
+    <meta name="description" content="Per-site allow-list of plugins in WordPress Multisite: network-level UI, secure site search, and runtime enforcement that hides disallowed plugins from site admins." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+
+    <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- IMPORTANT: relative path from /case-studies/ -->
+    <link rel="stylesheet" href="../assets/css/stylesheet.css" />
+
+    <style>
+      /* Page-specific layout only (everything else comes from your shared CSS) */
+      .cs-hero h1 { margin: .35em 0; }
+      .cs-meta { color: var(--muted); }
+      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
+
+      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" role="banner">
+      <div class="wrap nav-inner">
+        <div class="brand"><span class="dot" aria-hidden="true"></span> Zach Turner</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#contact">Contact</a>
+          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content">
+      <section class="section cs-hero">
+        <div class="kicker">Case Study</div>
+        <h1>Multisite Plugin Permission Manager</h1>
+        <p class="cs-meta">WordPress VIP · Multisite · Network Admin · Security · UX</p>
+      </section>
+
+      <section class="section">
+        <h2>Problem</h2>
+        <div class="card project-card">
+          <p>
+            In a WordPress Multisite network, site-level <em>Administrators</em> had full visibility into all installed plugins,
+            which didn’t align with compliance and support policies. We needed a way for <em>Network Admins</em> to set a
+            per-site allow-list (from a global whitelist) so site Admins only see and manage approved plugins on their site.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Approach</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li><strong>Network-only UI</strong>: choose allowed plugins per site, constrained by a global whitelist.</li>
+            <li><strong>Secure site search</strong>: AJAX + nonce + cached site list for fast selection.</li>
+            <li><strong>Runtime enforcement</strong>: prune the Plugins screen server-side for site Admins.</li>
+            <li><strong>Defense in depth</strong>: whitelist intersection on save and again during enforcement.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Runtime enforcement (Plugins screen)</h2>
+        <div class="card project-card">
+          <p>
+            This is the heart of the feature: for non-network admins, read the site’s allow-list, intersect with the
+            global whitelist, then remove any other plugins from the Plugins table. No JS required—safe and fast.
+          </p>
+<pre><code class="language-php">public function restrict_plugins_for_administrators(): void {
+    if ( current_user_can('manage_network') || ! is_admin() ) return;
+
+    global $wp_list_table;
+    if ( ! isset($wp_list_table) ) return;
+
+    $current_site_id = get_current_blog_id();
+    $allowed = (array) get_blog_option($current_site_id, 'allowed_plugins_for_admins', []);
+
+    // Enforce global whitelist safety
+    $allowed = array_values(array_intersect($allowed, $this-&gt;whitelist()));
+
+    // Prune the Plugins list for site Admins
+    foreach ( $wp_list_table-&gt;items as $file =&gt; $_data ) {
+        if ( ! in_array($file, $allowed, true) ) {
+            unset($wp_list_table-&gt;items[$file]);
+        }
+    }
+}
+</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Network Admin: per-site allow-list</h2>
+        <div class="card project-card">
+          <p>
+            In Network Admin, only whitelisted plugins are shown for selection. On save, we intersect again with the whitelist
+            (defense in depth) and persist the per-site allow-list to <code>allowed_plugins_for_admins</code>.
+          </p>
+<pre><code class="language-php">$whitelist = Permissions::pluginWhitelist();
+
+// Show only whitelisted plugins in the table
+$all_plugins = array_filter(
+    get_plugins(),
+    fn($file) =&gt; in_array($file, $whitelist, true),
+    ARRAY_FILTER_USE_KEY
+);
+
+$site_id = isset($_GET['site_id']) ? intval($_GET['site_id'])
+         : (isset($_POST['site_id']) ? intval($_POST['site_id']) : 1);
+if ( ! get_blog_details($site_id) ) $site_id = 1;
+
+$allowed = (array) get_blog_option($site_id, 'allowed_plugins_for_admins', []);
+
+if ( isset($_POST['save_plugin_access']) ) {
+    if ( ! current_user_can('manage_network') ) {
+        wp_die( esc_html__('Unauthorized') );
+    }
+    check_admin_referer('cap_save_plugin_access', 'cap_save_nonce');
+
+    $input = isset($_POST['allowed_plugins']) &amp;&amp; is_array($_POST['allowed_plugins'])
+        ? array_map('sanitize_text_field', wp_unslash($_POST['allowed_plugins']))
+        : [];
+
+    // Persist intersection for safety
+    $allowed = array_values(array_intersect($input, $whitelist));
+    update_blog_option($site_id, 'allowed_plugins_for_admins', $allowed);
+}
+</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Key Snippet — Secure site search (AJAX)</h2>
+        <div class="card project-card">
+          <p>
+            Lightweight, cached site search to pick a site. Secured with capability checks and an AJAX nonce; results capped to 5.
+          </p>
+<pre><code class="language-php">if ( ! current_user_can('manage_network') ) {
+    wp_send_json_error(['message' =&gt; 'Unauthorized'], 403);
+}
+check_ajax_referer('cap_search_sites', '_cap_nonce');
+
+$term = isset($_GET['term']) ? sanitize_text_field(wp_unslash($_GET['term'])) : '';
+if ( mb_strlen($term) &lt; 2 ) {
+    wp_send_json(['results' =&gt; []]);
+}
+
+$out = [];
+foreach ( $this-&gt;cache-&gt;getList() as $id =&gt; $name ) {
+    if ( stripos($name, $term) !== false ) {
+        $out[] = ['id' =&gt; (int) $id, 'text' =&gt; $name];
+        if ( count($out) === 5 ) break;
+    }
+}
+wp_send_json(['results' =&gt; $out]);
+</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Wiring (minimal)</h2>
+        <div class="card project-card">
+          <div class="props-grid">
+            <div><strong>Network menu</strong><br><code>add_action('network_admin_menu', ...)</code></div>
+            <div><strong>AJAX endpoint</strong><br><code>add_action('wp_ajax_cap_site_search', ...)</code></div>
+            <div><strong>Enforcement</strong><br><code>add_action('load-plugins.php', ...)</code></div>
+            <div><strong>Storage</strong><br><code>update_blog_option('allowed_plugins_for_admins', ...)</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="results-heading">
+        <h2 id="results-heading">Results</h2>
+        <div class="card project-card">
+          <ul class="colored">
+            <li>Per-site control over visible/usable plugins for site Admins</li>
+            <li>Safer operations via a global whitelist and double-checked intersections</li>
+            <li>No-JS enforcement on the Plugins screen; UX feels native and fast</li>
+            <li>Secure Network Admin UX with capability checks and nonces</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Recording & Links</h2>
+        <div class="card project-card">
+          <p>
+            <a class="btn" href="#">Watch 90-sec overview</a>
+            <a class="btn" href="#">View repo / gist</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+    </footer>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+  </body>
+</html>
