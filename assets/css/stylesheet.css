@@ -372,3 +372,105 @@ pre {
   .projects .col-6,
   .projects .col-4 { grid-column: span 12; }
 }
+
+
+
+/* ===========================
+   1) Brighten & spacing polish
+=========================== */
+:root {
+  /* slightly brighter panels/cards overall */
+  --bg:     color-mix(in oklab, #0F141B 90%, white 10%);
+  --panel:  color-mix(in oklab, #141A22 85%, white 15%);
+  --card:   color-mix(in oklab, #121821 80%, white 20%);
+}
+
+/* body copy a hair larger in cards for readability */
+.project-card p { font-size: 1rem; }
+
+/* consistent section spacing */
+.section { margin-top: 56px; }
+
+/* add subtle divider to separate sections on long pages */
+.section + .section { border-top: 1px solid var(--border); padding-top: 32px; }
+
+/* ===========================
+   2) Buttons: clear hierarchy
+=========================== */
+.btn {
+  text-decoration: none;      /* links are underlined; buttons are not */
+  border: none;
+  background: var(--panel);
+  /* keep your existing radius/shadow but lighten default fill */
+}
+
+/* Primary CTA: use accent, white text, unmistakable button */
+.btn--primary {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 92%, white 8%), var(--accent));
+  color: #fff;
+  box-shadow: 0 10px 28px color-mix(in oklab, var(--accent) 26%, transparent);
+}
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px color-mix(in oklab, var(--accent) 32%, transparent);
+}
+.btn--primary:active { transform: translateY(0); }
+
+/* Secondary: subtle outline for less important actions */
+.btn--secondary {
+  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--border));
+  color: var(--text);
+}
+.btn--secondary:hover {
+  background: color-mix(in oklab, var(--panel) 75%, transparent);
+}
+
+/* Icon affordance on CTAs */
+.btn[data-icon="arrow"]::after {
+  content: "→";
+  font-weight: 700;
+  margin-left: 6px;
+  line-height: 1;
+}
+
+/* Larger hit area for mobile */
+@media (max-width: 860px) {
+  .btn { width: 100%; justify-content: center; }
+}
+
+/* ===========================
+   3) Card actions bar
+=========================== */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+/* Make cards optically lighter on hover and clickable-looking */
+.project-card:hover {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--panel) 80%, transparent), var(--card));
+}
+
+/* ===========================
+   4) Micro-UX & a11y polish
+=========================== */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, white 0%);
+  outline-offset: 3px;
+}
+
+/* Page heading: lift contrast and add breathing room */
+h1 {
+  letter-spacing: -0.01em;
+  margin-bottom: .4em;
+}
+
+/* Reduce card text width for easier reading */
+.project-card p { max-width: 70ch; }
