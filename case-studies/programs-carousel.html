@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Case Study · Programs Carousel (Gutenberg, SSR) · Zach Turner</title>
-    <meta name="description" content="Server‑rendered Programs Carousel block with geo context, taxonomy merging, clean integration hooks, and optional ad injection." />
+    <title>Program Aggregator Block · Gutenberg (SSR)</title>
+    <meta name="description" content="Server-rendered Program Aggregator block with geo context, taxonomy merging, SEO-first rendering, scalable content queries, and optional ad injection." />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
@@ -37,7 +37,7 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+          <!-- <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a> -->
         </nav>
       </div>
     </header>
@@ -45,7 +45,7 @@
     <main class="wrap" id="main-content">
       <section class="section cs-hero">
         <div class="kicker">Case Study</div>
-        <h1>Programs Carousel · Gutenberg (SSR)</h1>
+        <h1>Program Aggregator Block · Gutenberg</h1>
         <p class="cs-meta">WordPress · Gutenberg · Server‑Side Rendering · API Integration</p>
       </section>
 
@@ -53,195 +53,351 @@
         <h2>Problem</h2>
         <div class="card project-card">
           <p>
-            Surface location‑relevant “programs” in a performant carousel that editors can drop anywhere.
-            Requirements: geo‑aware results from a cookie, optional merge of page categories with editor‑selected
-            categories, clean integration hooks for the data layer, and an optional ad slot without breaking layout.
+          Build a scalable, SEO-first program aggregation system that dynamically surfaces location-relevant content while remaining fully crawlable and performant. 
+          The component needed to support geo-aware filtering, taxonomy merging, monetization hooks, and reusable inner blocks, all without sacrificing server-side rendering or clean markup.
           </p>
         </div>
       </section>
 
-      <section class="section">
-        <h2>Approach</h2>
-        <div class="card project-card">
-          <ul class="colored">
-            <li><strong>SSR block</strong> for fast first paint and consistent escaping/sanitization</li>
-            <li><strong>Geo context</strong> (lat/lon/postal code) read from a cookie and passed to the query</li>
-            <li><strong>Taxonomy merge</strong>: combine page categories with block‑selected categories (optional)</li>
-            <li><strong>Integration hooks</strong>: vendor‑neutral filters to fetch/augment query params</li>
-            <li><strong>Composable inner blocks</strong>: inlined geolocation form + SSR program cards</li>
-            <li><strong>Monetization</strong>: configurable ad injection at a specific index (stubbed vendor code)</li>
-          </ul>
-        </div>
-      </section>
+   <section class="section">
+      <h2>SEO & Performance Principles</h2>
+      <div class="card project-card">
+        <ul class="colored">
+          <li><strong>Server-Side Rendering:</strong> All program content is rendered server-side to ensure full crawlability and indexability.</li>
+          <li><strong>Semantic Markup:</strong> Proper heading hierarchy, structured containers, and clean HTML output.</li>
+          <li><strong>Internal Linking Strategy:</strong> Program cards link into taxonomy-driven landing pages to strengthen topical clusters.</li>
+          <li><strong>Query Efficiency:</strong> Controlled result limits and filter-based query augmentation to reduce unnecessary load.</li>
+          <li><strong>Core Web Vitals Awareness:</strong> Minimized client-side JS, controlled asset loading, and optional ad injection without layout shift.</li>
+        </ul>
+      </div>
+    </section>
 
-      <section class="section">
-        <h2>Key Snippet (Render)</h2>
-        <div class="card project-card">
-          <p>
-            The render callback below shows the core: cookie‑driven geo context, category merging, filter‑based
-            data fetching, ad injection, and safe output. All integration points are neutral (no company branding).
-          </p>
-<pre><code class="language-php">
-&lt;?php
-/**
- * Programs Carousel (SSR, vendor‑neutral)
- */
-$api_plugin_active = apply_filters( 'programs_carousel/is_api_available', true );
+<section class="section">
+  <h2>Block Definition (block.json excerpt)</h2>
+  <div class="card project-card">
+    <p>
+      The Program Aggregator block is defined using the modern <code>block.json</code> API (apiVersion 3) 
+      and leverages server-side rendering via <code>render.php</code>. Attributes support SEO-focused 
+      aggregation logic, geo-aware filtering, monetization controls, and editor-driven configuration.
+    </p>
 
-if ( $api_plugin_active ) {
-    // 1) Geo context from cookie
-    $cookie_key   = apply_filters( 'programs_carousel/location_cookie_key', 'location_data' );
-    $rawCookie    = isset($_COOKIE[$cookie_key]) ? stripslashes($_COOKIE[$cookie_key]) : null;
-    $locationData = $rawCookie ? json_decode($rawCookie, true) : null;
-
-    $lat     = $locationData['latitude']  ?? '';
-    $lon     = $locationData['longitude'] ?? '';
-    $zipcode = $locationData['zipcode']   ?? '';
-
-    // 2) Base query from block attrs
-    $query_params = [
-        'lat'                =&gt; $lat,
-        'lon'                =&gt; $lon,
-        'postal_code'        =&gt; $zipcode,
-        'distance'           =&gt; isset($attributes['distance']) ? (int) $attributes['distance'] : 0,
-        'include_affiliates' =&gt; ! empty($attributes['includeAffiliates']),
-        'listing_type'       =&gt; isset($attributes['listingType']) ? sanitize_text_field($attributes['listingType']) : '',
-        'max_price'          =&gt; isset($attributes['priceMax']) ? (float) $attributes['priceMax'] : null,
-        'min_price'          =&gt; isset($attributes['priceMin']) ? (float) $attributes['priceMin'] : null,
-        'per_page'           =&gt; 12,
-    ];
-
-    // 3) Merge page cats + selected cats (optional)
-    $categoryIds = $attributes['selectedCategories'] ?? [];
-    if ( ! empty( $categoryIds ) ) {
-        if ( ! empty( $attributes['categoryParentPageInclude'] ) ) {
-            global $post;
-            $defaultIds  = array_map(fn($c) =&gt; $c-&gt;term_id, get_the_category($post-&gt;ID) ?: []);
-            $categoryIds = array_unique(array_merge($defaultIds, $categoryIds));
-            $excludePostId[] = $post-&gt;ID; // avoid showing current page
-        }
-
-        // 4) Let data layer augment query
-        $query_params = apply_filters('programs_carousel/augment_query_with_categories', $query_params, $categoryIds);
+<pre><code class="language-json">
+{
+  "apiVersion": 3,
+  "name": "cet/programs-and-articles",
+  "title": "Program Aggregator",
+  "category": "widgets",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "selectedCategories": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "default": []
+    },
+    "pageAggregationMatchLogic": {
+      "type": "string",
+      "default": "any"
+    },
+    "distance": {
+      "type": "string",
+      "default": ""
+    },
+    "includeAffiliates": {
+      "type": "boolean",
+      "default": false
+    },
+    "maxItems": {
+      "type": "number",
+      "default": 4
+    },
+    "priceMin": {
+      "type": "number",
+      "default": 0
+    },
+    "priceMax": {
+      "type": "number",
+      "default": 0
+    },
+    "adEnableLarge": {
+      "type": "boolean",
+      "default": false
+    },
+    "adPositionLarge": {
+      "type": "integer",
+      "default": 1
     }
+  },
+  "textdomain": "programs-and-articles",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}
+</code></pre>
 
-    // 5) Fetch programs via data layer
-    $programs = apply_filters('programs_carousel/fetch_programs', $query_params);
+  </div>
+</section>
+
+<section class="section">
+  <h2>Editor Experience & Dynamic Controls</h2>
+  <div class="card project-card">
+    <p>
+      The block dynamically fetches taxonomy data from a custom REST endpoint 
+      and builds lookup tables for ID ↔ label mapping, allowing editors to 
+      aggregate content without manual ID entry.
+    </p>
+
+<pre><code class="language-js">
+useEffect(() => {
+  apiFetch({ path: '/cet-aggregation/v1/categories' })
+    .then(data => {
+      setCategories(data.categories);
+      setLookupTables(data.lookupTables);
+    })
+    .catch(error => {
+      console.error('Error fetching categories:', error);
+      setError('Failed to fetch categories');
+    });
+}, []);
+</code></pre>
+
+  </div>
+
+
+  <div class="card project-card">
+<pre><code class="language-js">
+&lt;FormTokenField
+  label="Select Categories to Aggregate"
+  value={attributes.selectedCategories
+    .map(id =&gt; lookupTables.idToLabel[id])
+    .filter(Boolean)}
+  suggestions={categories.map(category =&gt; category.hierarchy ?? '')}
+  onChange={tokens =&gt; {
+    const newSelectedCategories = tokens
+      .map(token =&gt; lookupTables.labelToId[token])
+      .filter(id =&gt; id != null);
+
+    setAttributes({ selectedCategories: newSelectedCategories });
+  }}
+/&gt;
+</code></pre>
+
+
+
+  </div>
+</section>
+
+
+<!-- ========================= -->
+<!-- Server-Side Rendering (render.php excerpts) -->
+<!-- Paste this section into your case study page -->
+<!-- ========================= -->
+
+<section class="section" id="render-php">
+  <h2>Server-Side Aggregation (render.php)</h2>
+
+  <div class="card project-card">
+    <p>
+      The block is rendered server-side to keep aggregated content crawlable and consistent.
+      The render layer also scopes attributes by concern (program grid vs. article list),
+      merges taxonomy from the parent page when enabled, and composes nested SSR blocks for
+      reusable layouts.
+    </p>
+
+    <h3>1) Attribute scoping by concern</h3>
+    <p class="cs-meta">
+      Only the attributes needed by each sub-component are passed through, keeping the interface clean
+      and limiting unintended coupling.
+    </p>
+<pre><code class="language-php">
+$program_grid_attributes = array_intersect_key(
+    $attributes,
+    array_flip([
+        'selectedCategories',
+        'categoryParentPageInclude',
+        'adPositionLarge',
+        'adUnitLarge',
+        'adEnableLarge',
+        'distance',
+        'includeAffiliates',
+        'listingType',
+        'maxItems',
+        'priceMax',
+        'priceMin',
+        'programGridTitle',
+    ])
+);
+
+$article_list_attributes = array_intersect_key(
+    $attributes,
+    array_flip([
+        'adEnableSmall',
+        'adPositionSmall',
+        'adUnitSmall',
+        'selectedCategories',
+        'categoryParentPageInclude',
+        'pageAggregationMatchLogic',
+        'pageRandomize',
+        'relatedContentUrl',
+        'relatedContentTitle',
+        'articleListTitle',
+        'pageDisplayType',
+    ])
+);
+</code></pre>
+
+    <h3>2) Taxonomy merge (page categories + editor-selected categories)</h3>
+    <p class="cs-meta">
+      When enabled, the block can incorporate categories from the parent page and merge them with the
+      block’s selected categories to create scalable, context-aware aggregation.
+    </p>
+<pre><code class="language-php">
+$categoryIdsFromBlock = $attributes['selectedCategories'] ?? [];
+
+if ( ! empty( $attributes['categoryParentPageInclude'] ) ) {
+    global $post;
+
+    $defaultCategories  = get_the_category( $post->ID );
+    $defaultCategoryIds = array_map(
+        fn( $cat ) =&gt; $cat-&gt;term_id,
+        $defaultCategories ?: []
+    );
+
+    $categoryIds = array_unique(
+        array_merge( $defaultCategoryIds, $categoryIdsFromBlock )
+    );
 } else {
-    $programs = [];
+    $categoryIds = $categoryIdsFromBlock;
+}
+</code></pre>
+
+    <h3>3) Nested SSR block composition</h3>
+    <p class="cs-meta">
+      The top-level aggregator composes sub-blocks (program grid + article list) and passes only the
+      relevant attributes to each one.
+    </p>
+<pre><code class="language-php">
+$program_grid_block = render_block([
+    'blockName' =&gt; 'cet/program-grid',
+    'attrs'     =&gt; $program_grid_attributes,
+]);
+
+echo $program_grid_block;
+
+$article_list_block = render_block([
+    'blockName' =&gt; 'cet/article-list',
+    'attrs'     =&gt; $article_list_attributes,
+]);
+
+echo $article_list_block;
+</code></pre>
+
+  </div>
+</section>
+
+
+<section class="section" id="program-grid-ssr">
+  <h2>Program Grid · Dynamic Query & SEO Routing</h2>
+
+  <div class="card project-card">
+    <p>
+      The Program Grid sub-block builds dynamic query parameters based on geo context,
+      taxonomy selections, and pricing filters. It also constructs a canonical
+      “View More” URL that preserves structured filtering for search engine crawlability.
+    </p>
+
+    <h3>1) Geo-aware query construction</h3>
+<pre><code class="language-php">
+$locationData = isset($_COOKIE['SESSlocationdata'])
+    ? json_decode(stripslashes($_COOKIE['SESSlocationdata']), true)
+    : null;
+
+$lat     = $locationData['latitude']  ?? '';
+$lon     = $locationData['longitude'] ?? '';
+$zipcode = $locationData['zipcode']   ?? '';
+
+$query_params = [
+    'lat'               =&gt; $lat,
+    'lon'               =&gt; $lon,
+    'code'              =&gt; $zipcode,
+    'distance'          =&gt; $attributes['distance'],
+    'includeAffiliates' =&gt; $attributes['includeAffiliates'],
+    'max_price'         =&gt; $attributes['priceMax'],
+    'min_price'         =&gt; $attributes['priceMin'],
+    'per_page'          =&gt; $maxItems,
+];
+</code></pre>
+
+    <h3>2) Taxonomy → structured sport keys</h3>
+<pre><code class="language-php">
+foreach ($categoryIds as $categoryId) {
+    $category = get_category($categoryId);
+    if (!$category) continue;
+
+    $sport_key = get_term_meta(
+        $category-&gt;term_id,
+        'portal_sport_key_id',
+        true
+    );
+
+    if (!empty($sport_key) &amp;&amp; !in_array($sport_key, $sport_keys, true)) {
+        $sport_keys[] = $sport_key;
+    }
 }
 
-// 6) Presentation
-$columns         = ! empty($attributes['carouselDisplayCount']) ? (int) $attributes['carouselDisplayCount'] : 3;
-$colorBackground = ! empty($attributes['colorBackground']) ? sanitize_html_class($attributes['colorBackground']) : '';
-$paddingRemove   = ! empty($attributes['paddingRemove'])   ? sanitize_html_class($attributes['paddingRemove'])   : '';
-
-// 7) Optional ad
-$adEnable = ! empty($attributes['adEnable']);
-$adPos    = isset($attributes['adPosition']) ? (int) $attributes['adPosition'] : 0;
-$adUnit   = isset($attributes['adUnit']) ? sanitize_text_field($attributes['adUnit']) : '';
-$adDomId  = uniqid('program-carousel-ad-');
-?&gt;
-
-&lt;div &lt;?php echo get_block_wrapper_attributes(); ?&gt;&gt;
-  &lt;div class="program-carousel container &lt;?php echo esc_attr(trim($colorBackground.' '.$paddingRemove)); ?&gt;"
-       data-distance="&lt;?php echo esc_attr($attributes['distance'] ?? ''); ?&gt;"
-       data-include-affiliates="&lt;?php echo esc_attr(!empty($attributes['includeAffiliates']) ? 'true' : 'false'); ?&gt;"
-       data-listing-type="&lt;?php echo esc_attr($attributes['listingType'] ?? ''); ?&gt;"
-       data-max-price="&lt;?php echo esc_attr($attributes['priceMax'] ?? ''); ?&gt;"
-       data-min-price="&lt;?php echo esc_attr($attributes['priceMin'] ?? ''); ?&gt;"
-       data-block-type="program-carousel"&gt;
-
-    &lt;div class="program-carousel__body text-content"&gt;
-      &lt;?php echo wp_kses_post($attributes['body'] ?? ''); ?&gt;
-    &lt;/div&gt;
-
-    &lt;?php
-      // Inner block: Geolocation form (SSR)
-      echo render_block([ 'blockName' =&gt; 'app/geolocation-form' ]);
-    ?&gt;
-
-    &lt;div class="program-carousel__grid" data-columns="&lt;?php echo esc_attr($columns); ?&gt;"&gt;
-      &lt;?php
-      if ( ! empty($programs['metadata']['pagination']['total']) ) {
-        $shown = 0; $max = 12;
-
-        foreach ( (array) ($programs['result'] ?? []) as $i =&gt; $program ) {
-          // Ad injection at specific index
-          if ( $adEnable &amp;&amp; ($i + 1) === $adPos ) {
-            ?&gt;
-            &lt;div class="program-carousel__ad"&gt;
-              &lt;div id="&lt;?php echo esc_attr($adDomId); ?&gt;" class="ad-slot"&gt;
-                &lt;script type="text/plain" class="consent-ad-category"&gt;
-                  // Hook up your ad stack here, e.g. window.initAdSlot('&lt;?php echo esc_js($adDomId); ?&gt;', { unit: '&lt;?php echo esc_js($adUnit); ?&gt;' });
-                &lt;/script&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;?php
-            if (++$shown &gt;= $max) break;
-          }
-
-          // Program card as SSR inner block
-          echo render_block([
-            'blockName' =&gt; 'app/program-card',
-            'attrs'     =&gt; [ 'program' =&gt; $program ],
-          ]);
-
-          if (++$shown &gt;= $max) break;
-        }
-      }
-      ?&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
+$sport_keys_imploded =
+    'sport_keys[]=' . implode('&amp;sport_keys[]=', array_map('rawurlencode', $sport_keys));
 </code></pre>
-        </div>
-      </section>
 
-      <section class="section">
-        <h2>Block API & Integration Points</h2>
-        <div class="card project-card">
-          <div class="props-grid">
-            <div><strong>Hook</strong><br><code>programs_carousel/is_api_available</code></div>
-            <div><strong>Purpose</strong><br>Feature‑flag the data layer per environment.</div>
+    <h3>3) Canonical View More URL construction</h3>
+<pre><code class="language-php">
+$qs = [];
 
-            <div><strong>Hook</strong><br><code>programs_carousel/location_cookie_key</code></div>
-            <div><strong>Purpose</strong><br>Swap the cookie key (e.g., <code>location_data</code>).</div>
+if ($lat !== '' &amp;&amp; $lon !== '') {
+    $qs[] = 'latitude='  . rawurlencode((string) $lat);
+    $qs[] = 'longitude=' . rawurlencode((string) $lon);
+}
 
-            <div><strong>Hook</strong><br><code>programs_carousel/augment_query_with_categories</code></div>
-            <div><strong>Purpose</strong><br>Translate category IDs into API params (taxonomy mapping).</div>
+if ($sport_keys_imploded !== '') {
+    $qs[] = $sport_keys_imploded;
+}
 
-            <div><strong>Hook</strong><br><code>programs_carousel/fetch_programs</code></div>
-            <div><strong>Purpose</strong><br>Fetch results. Expected shape: <code>{ metadata.pagination.total, result[] }</code>.</div>
-          </div>
-        </div>
-      </section>
+$view_more_href =
+    'https://www.sportsengine.com/search/listings'
+    . (!empty($qs) ? '?' . implode('&amp;', $qs) : '');
+</code></pre>
 
-      <section class="section" aria-labelledby="results-heading">
-        <h2 id="results-heading">Results</h2>
-        <div class="card project-card">
-          <ul class="colored">
-            <li>Geo‑aware results with SSR performance and safe output</li>
-            <li>Editor‑friendly: reusable inner blocks and simple attributes</li>
-            <li>Clean decoupling via filters: portable across vendors/environments</li>
-            <li>Optional monetization without layout regressions</li>
-          </ul>
-        </div>
-      </section>
+  </div>
 
-      <section class="section">
-        <h2>Recording & Links</h2>
-        <div class="card project-card">
-          <p>
-            <a class="btn" href="#">Watch 2‑min overview</a>
-            <a class="btn" href="#">View repo / gist</a>
-          </p>
-        </div>
-      </section>
-    </main>
+  <div class="card project-card">
+  <pre><code class="language-php">
+if ($adEnableLarge && (int) $adPositionLarge === (int) ($index + 1)) {
+    echo '&lt;div class="ad-card"&gt;';
+    echo '&lt;div id="' . esc_attr($adUniqueId) . '" class="block-gam"&gt;&lt;/div&gt;';
+    echo '&lt;/div&gt;';
+}
+</code></pre>
+</div>
+
+</section>
+
+<section class="section" aria-labelledby="results-heading">
+  <h2 id="results-heading">Results</h2>
+  <div class="card project-card">
+    <ul class="colored">
+      <li><strong>SEO-first aggregation:</strong> Fully server-rendered program and article content to ensure crawlability, clean markup, and structured internal linking.</li>
+      <li><strong>Scalable content hubs:</strong> Enabled editors to dynamically generate location-aware and taxonomy-driven landing pages without manual curation.</li>
+      <li><strong>Composable architecture:</strong> Decoupled data fetching, aggregation logic, and presentation layers for portability across multisite environments.</li>
+      <li><strong>Monetization without compromise:</strong> Configurable ad injection that preserved layout stability and avoided negative impact to performance metrics.</li>
+    </ul>
+  </div>
+</section>
 
     <footer class="wrap">
-      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+      <small>© <span id="y"></span> Zach Turner</small>
     </footer>
     <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
