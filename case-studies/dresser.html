@@ -8,6 +8,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
 
     <!-- Prism.js theme (okaidia: high contrast in dark, readable in light) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
@@ -39,13 +40,14 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
       <section class="section cs-hero">
+        <a class="crumb" href="../index.html#work">← All work</a>
         <div class="kicker">Case Study</div>
         <h1>Dresser / Drawer · Nested Gutenberg Blocks</h1>
         <p class="cs-meta">WordPress · Gutenberg · Parent/Child Architecture</p>
@@ -56,8 +58,8 @@
         <div class="card project-card">
           <p>
             Editors needed a flexible, reusable pattern to present titled sections that can optionally expand
-            to reveal content—while keeping layout consistent and editable. The solution had to support a
-            **parent container** that accepts free-form body/disclaimer content and a **set of child items**
+            to reveal content, while keeping layout consistent and editable. The solution had to support a
+            <strong>parent container</strong> that accepts free-form body/disclaimer content and a <strong>set of child items</strong>
             (drawers) the editor can add, order, and configure directly in Gutenberg.
           </p>
         </div>
@@ -76,11 +78,11 @@
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Parent renders children</h2>
+        <h2>Key Snippet · Parent renders children</h2>
         <div class="card project-card">
           <p>
-            The **Dresser** block acts as the parent container. It renders optional intro/disclaimer text and then
-            outputs the child block markup via <code>$content</code>—the canonical way to render nested blocks on the server.
+            The <strong>Dresser</strong> block acts as the parent container. It renders optional intro/disclaimer text and then
+            outputs the child block markup via <code>$content</code>. That's the canonical way to render nested blocks on the server.
           </p>
 <pre><code class="language-php">&lt;?php
 $colorBackground = ! empty( $attributes['colorBackground'] ) ? sanitize_title( $attributes['colorBackground'] ) : '';
@@ -126,12 +128,12 @@ if ( ! empty( $attributes['bodyLeftRight'] ) &amp;&amp; $attributes['bodyLeftRig
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Child block (Drawer)</h2>
+        <h2>Key Snippet · Child block (Drawer)</h2>
         <div class="card project-card">
           <p>
-            A **Drawer** displays a title row and conditionally renders its body. If there’s no body, it becomes a
+            A <strong>Drawer</strong> displays a title row and conditionally renders its body. If there’s no body, it becomes a
             non-expandable header. If body content exists, an arrow icon is shown and the content renders in an inner
-            container—perfect for an accordion-style pattern.
+            container. Perfect for an accordion-style pattern.
           </p>
 <pre><code class="language-php">&lt;?php
 $colorText      = ! empty( $attributes['colorText'] )   ? sanitize_title( $attributes['colorText'] )   : '';
@@ -194,15 +196,14 @@ $nonContentFlag = empty( $content ) ? 'non-content-drawer' : '';
         </div>
       </section>
 
-      <section class="section">
-        <h2>Recording & Links</h2>
-        <div class="card project-card">
-          <p>
-            <a class="btn" href="#">Watch 2-min overview</a>
-            <a class="btn" href="#">View repo / gist</a>
-          </p>
-        </div>
-      </section>
+
+      <nav class="cs-nav" aria-label="More case studies">
+        <a class="card project-card cs-nav__link" href="permission-manager.html">
+          <span class="cs-nav__label">← Previous case study</span>
+          <strong>Multisite Plugin Permission Manager</strong>
+        </a>
+        <span></span>
+      </nav>
     </main>
 
     <footer class="wrap">

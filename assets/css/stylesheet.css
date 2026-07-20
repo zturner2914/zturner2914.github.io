@@ -6,9 +6,9 @@
   --accent-2:#6AA9F0;
 
   /* Lightened dark palette for readability */
-  --bg:      #0F141B;   /* was #0B0D10 */
-  --panel:   #141A22;   /* was #0F1318 */
-  --card:    #121821;   /* was #0F1216 */
+  --bg:      color-mix(in oklab, #0F141B 90%, white 10%);
+  --panel:   color-mix(in oklab, #141A22 85%, white 15%);
+  --card:    color-mix(in oklab, #121821 80%, white 20%);
   --border:  #253243;   /* was #1B2027 */
   --text:    #F2F5FB;   /* was #E9EEF6 */
   --muted:   #BBC6D6;   /* was #A6B2C6 */
@@ -35,6 +35,12 @@
   :root {
     --muted:  #CAD3E1;
     --border: #2C3B50;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: light) {
+  :root {
+    --muted:  #3A4B63;
+    --border: #B9C4D4;
   }
 }
 
@@ -165,7 +171,6 @@ header.nav {
       var(--card)
     );
   color: var(--text);
-  box-shadow: var(--shadow);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .btn:hover {
@@ -376,15 +381,8 @@ pre {
 
 
 /* ===========================
-   1) Brighten & spacing polish
+   1) Spacing polish
 =========================== */
-:root {
-  /* slightly brighter panels/cards overall */
-  --bg:     color-mix(in oklab, #0F141B 90%, white 10%);
-  --panel:  color-mix(in oklab, #141A22 85%, white 15%);
-  --card:   color-mix(in oklab, #121821 80%, white 20%);
-}
-
 /* body copy a hair larger in cards for readability */
 .project-card p { font-size: 1rem; }
 
@@ -399,9 +397,8 @@ pre {
 =========================== */
 .btn {
   text-decoration: none;      /* links are underlined; buttons are not */
-  border: none;
+  border: 1px solid var(--border);
   background: var(--panel);
-  /* keep your existing radius/shadow but lighten default fill */
 }
 
 /* Primary CTA: use accent, white text, unmistakable button */
@@ -459,7 +456,7 @@ pre {
    4) Micro-UX & a11y polish
 =========================== */
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }
 :focus-visible {
   outline: 2px solid color-mix(in oklab, var(--accent) 70%, white 0%);
@@ -474,3 +471,223 @@ h1 {
 
 /* Reduce card text width for easier reading */
 .project-card p { max-width: 70ch; }
+
+/* ==================================================
+   HERO REFRESH
+================================================== */
+.name-gradient { color: var(--text); }
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .name-gradient {
+    background: linear-gradient(94deg, var(--text) 25%, var(--accent-2) 65%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* ==================================================
+   TERMINAL CARD
+================================================== */
+.terminal { padding: 0; overflow: hidden; }
+.terminal__bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+}
+.terminal__bar span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.terminal__bar span:nth-child(1) { background: #FF5F57; }
+.terminal__bar span:nth-child(2) { background: #FEBC2E; }
+.terminal__bar span:nth-child(3) { background: #28C840; }
+.terminal__body {
+  margin: 0;
+  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.terminal__body span { display: block; }
+.terminal__body .cmd { color: var(--text); }
+.terminal__body .cmd::before { content: "$ "; color: var(--accent); font-weight: 700; }
+.terminal__body .out { color: var(--muted); }
+.terminal__body .ok { color: var(--muted); }
+.terminal__body .ok::before { content: "✓ "; color: #28C840; font-weight: 700; }
+@keyframes blink { 50% { opacity: 0; } }
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 1.1em;
+  background: var(--accent);
+  vertical-align: text-bottom;
+  animation: blink 1.2s steps(1) infinite;
+}
+
+/* ==================================================
+   FEATURED PROJECT CARDS
+================================================== */
+.flag {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--border));
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.projects .featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: center;
+  padding: clamp(20px, 3vw, 32px);
+}
+.projects .featured.flip .featured__media { order: -1; }
+.featured__media { min-width: 0; }
+
+/* ==================================================
+   ARCHITECTURE DIAGRAMS (inline SVG)
+================================================== */
+.diagram { display: block; width: 100%; height: auto; }
+.diagram .box {
+  fill: color-mix(in oklab, var(--panel) 70%, transparent);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+.diagram .box--accent {
+  stroke: color-mix(in oklab, var(--accent) 60%, var(--border));
+  fill: color-mix(in oklab, var(--accent) 8%, transparent);
+}
+.diagram text {
+  fill: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.diagram .sub {
+  fill: var(--muted);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+.diagram .flow {
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  fill: none;
+}
+.diagram .arrowhead { fill: var(--accent); }
+
+/* ==================================================
+   SCROLL REVEAL
+================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal { transition: opacity .55s ease, transform .55s ease; }
+  .js .reveal:not(.in) { opacity: 0; transform: translateY(16px); }
+  .js .reveal.in {
+    transition: opacity .55s ease, transform .3s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+}
+
+/* ==================================================
+   EXPERIENCE TIMELINE
+================================================== */
+.timeline {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  position: relative;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline li {
+  position: relative;
+  padding-left: 30px;
+  margin: 0 0 22px;
+}
+.timeline li:last-child { margin-bottom: 0; }
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .35em;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+.timeline__when {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.timeline li p { margin: 4px 0 0; }
+
+/* ==================================================
+   CASE STUDY NAV (breadcrumb + prev/next)
+================================================== */
+.crumb {
+  display: inline-block;
+  font-size: 14.5px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.crumb:hover { color: var(--accent); text-decoration: underline; }
+
+.cs-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+}
+.cs-nav a.cs-nav__link {
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+}
+.cs-nav__label { font-size: 13px; color: var(--muted); }
+.cs-nav__link--next { text-align: right; align-items: flex-end; }
+
+/* ==================================================
+   RESPONSIVE (new components)
+================================================== */
+@media (max-width: 860px) {
+  .projects .featured { grid-template-columns: 1fr; }
+  .projects .featured.flip .featured__media { order: 0; }
+  .cs-nav { grid-template-columns: 1fr; }
+  .cs-nav__link--next { text-align: left; align-items: flex-start; }
+}

@@ -8,6 +8,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
     <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
 
@@ -39,13 +40,14 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
       <section class="section cs-hero">
+        <a class="crumb" href="../index.html#work">← All work</a>
         <div class="kicker">Case Study</div>
         <h1>Drupal → WordPress Block Migration</h1>
         <p class="cs-meta">WordPress VIP · Drupal 9 · Gutenberg · Multisite</p>
@@ -54,7 +56,7 @@
       <section class="section">
         <h2>Problem</h2>
         <div class="card project-card">
-          <p>We needed to migrate nested Drupal components into Gutenberg blocks across multiple brands without breaking layouts or editor workflows.</p>
+          <p>I helped build the original Drupal platform during my years at NBC Sports Next. Then I architected the move off it: migrating nested Drupal components into Gutenberg blocks across multiple brands without breaking layouts or editor workflows. Full lifecycle ownership, from first build to final redirect.</p>
         </div>
       </section>
 
@@ -84,7 +86,8 @@
             // Depth-limited recursion, skip missing/unpublished
             function get_components(int $nid, int $depth = 0): array {
                 if ($depth > 2) return [];
-                $rows = $this->drupalConnection->do_query($components_query, [$nid]);
+                $components = [];
+                $rows = $this->drupalConnection->do_query($this->components_query, [$nid]);
                 if (empty($rows[0]->field_components_target_id)) return [];
                 foreach ($rows as $row) {
                     $meta = $this->drupalConnection->do_query(
@@ -104,7 +107,7 @@
       </section>
 
       <section class="section">
-  <h2>Key Snippet – Carousel Mapping</h2>
+  <h2>Key Snippet · Carousel Mapping</h2>
   <div class="card project-card">
     <p>
       This excerpt from <code>parse_to_block()</code> maps Drupal’s
@@ -181,7 +184,7 @@ case ALLOWED_COMPONENTS::CAROUSEL->value:
         <h2 id="results-heading">Results</h2>
         <div class="card project-card">
           <p>
-            Successfully migrated all targeted content and structure — including pages, posts, images, internal URLs, navigation menus, and taxonomies — with full parity to the Drupal source and verified editor workflows.
+            Migrated all targeted content and structure with full parity to the Drupal source: pages, posts, images, internal URLs, navigation menus, and taxonomies. Editor workflows verified.
           </p>
           <ul class="colored">
             <li>Preserved layout integrity with order-aware, depth-limited traversal</li>
@@ -191,16 +194,16 @@ case ALLOWED_COMPONENTS::CAROUSEL->value:
         </div>
       </section>
 
-
-      <section class="section">
-        <h2>Recording & Links</h2>
-        <div class="card project-card">
-          <p>
-            <a class="btn" href="#">Watch 3‑min overview</a>
-            <a class="btn" href="#">View repo / gist</a>
-          </p>
-        </div>
-      </section>
+      <nav class="cs-nav" aria-label="More case studies">
+        <a class="card project-card cs-nav__link" href="aggregation.html">
+          <span class="cs-nav__label">← Previous case study</span>
+          <strong>Taxonomy Query Engine (Deep Dive)</strong>
+        </a>
+        <a class="card project-card cs-nav__link cs-nav__link--next" href="permission-manager.html">
+          <span class="cs-nav__label">Next case study →</span>
+          <strong>Multisite Plugin Permission Manager</strong>
+        </a>
+      </nav>
     </main>
 
     <footer class="wrap">

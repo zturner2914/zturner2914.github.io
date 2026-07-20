@@ -8,6 +8,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
 
     <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
@@ -38,16 +39,18 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
       <section class="section cs-hero">
-        <div class="kicker">Case Study</div>
-        <h1>Aggregation Plugin · Pages</h1>
+        <a class="crumb" href="../index.html#work">← All work</a>
+        <div class="kicker">Case Study · Deep Dive</div>
+        <h1>Taxonomy Query Engine · Pages Aggregation</h1>
         <p class="cs-meta">WordPress · WP_Query · REST · Taxonomy Modeling</p>
+        <p class="cs-meta">The query engine behind the <a href="programs-aggregator.html">Program Aggregation Platform</a>.</p>
       </section>
 
       <section class="section">
@@ -75,7 +78,7 @@
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Taxonomy-aware query builder</h2>
+        <h2>Key Snippet · Taxonomy-aware query builder</h2>
         <div class="card project-card">
           <p>
             Core logic from <code>PagesAggregationHandler::fetch_pages_by_categories()</code>: exclude a special category,
@@ -128,7 +131,7 @@ $query = new WP_Query($args);</code></pre>
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Normalized output model</h2>
+        <h2>Key Snippet · Normalized output model</h2>
         <div class="card project-card">
           <p>
             From <code>prepare_page_data()</code>: shape each page into a single, UI-friendly object with sponsor, sport, article type, featured flags, and images.
@@ -198,7 +201,7 @@ return [
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Category API for the editor</h2>
+        <h2>Key Snippet · Category API for the editor</h2>
         <div class="card project-card">
           <p>
             From <code>CategoriesHandler::get_categories()</code>: REST payload includes hierarchy strings and two lookup tables for fast two-way mapping.
@@ -260,15 +263,17 @@ return rest_ensure_response([
         </div>
       </section>
 
-      <section class="section">
-        <h2>Recording & Links</h2>
-        <div class="card project-card">
-          <p>
-            <a class="btn" href="#">Watch 2-min overview</a>
-            <a class="btn" href="#">View repo / gist</a>
-          </p>
-        </div>
-      </section>
+
+      <nav class="cs-nav" aria-label="More case studies">
+        <a class="card project-card cs-nav__link" href="programs-aggregator.html">
+          <span class="cs-nav__label">← Previous case study</span>
+          <strong>Program Aggregation Platform</strong>
+        </a>
+        <a class="card project-card cs-nav__link cs-nav__link--next" href="migration.html">
+          <span class="cs-nav__label">Next case study →</span>
+          <strong>Drupal → WordPress Migration Pipeline</strong>
+        </a>
+      </nav>
     </main>
 
     <footer class="wrap">

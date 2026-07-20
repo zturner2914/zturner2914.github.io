@@ -8,6 +8,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
 
     <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
@@ -38,13 +39,14 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../Zachary_Turner_Resume_2025_with_short_summary.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
       <section class="section cs-hero">
+        <a class="crumb" href="../index.html#work">← All work</a>
         <div class="kicker">Case Study</div>
         <h1>Multisite Plugin Permission Manager</h1>
         <p class="cs-meta">WordPress VIP · Multisite · Network Admin · Security · UX</p>
@@ -74,11 +76,11 @@
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Runtime enforcement (Plugins screen)</h2>
+        <h2>Key Snippet · Runtime enforcement (Plugins screen)</h2>
         <div class="card project-card">
           <p>
             This is the heart of the feature: for non-network admins, read the site’s allow-list, intersect with the
-            global whitelist, then remove any other plugins from the Plugins table. No JS required—safe and fast.
+            global whitelist, then remove any other plugins from the Plugins table. No JS required. Safe and fast.
           </p>
 <pre><code class="language-php">public function restrict_plugins_for_administrators(): void {
     if ( current_user_can('manage_network') || ! is_admin() ) return;
@@ -104,7 +106,7 @@
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Network Admin: per-site allow-list</h2>
+        <h2>Key Snippet · Network Admin: per-site allow-list</h2>
         <div class="card project-card">
           <p>
             In Network Admin, only whitelisted plugins are shown for selection. On save, we intersect again with the whitelist
@@ -144,7 +146,7 @@ if ( isset($_POST['save_plugin_access']) ) {
       </section>
 
       <section class="section">
-        <h2>Key Snippet — Secure site search (AJAX)</h2>
+        <h2>Key Snippet · Secure site search (AJAX)</h2>
         <div class="card project-card">
           <p>
             Lightweight, cached site search to pick a site. Secured with capability checks and an AJAX nonce; results capped to 5.
@@ -195,15 +197,17 @@ wp_send_json(['results' =&gt; $out]);
         </div>
       </section>
 
-      <section class="section">
-        <h2>Recording & Links</h2>
-        <div class="card project-card">
-          <p>
-            <a class="btn" href="#">Watch 90-sec overview</a>
-            <a class="btn" href="#">View repo / gist</a>
-          </p>
-        </div>
-      </section>
+
+      <nav class="cs-nav" aria-label="More case studies">
+        <a class="card project-card cs-nav__link" href="migration.html">
+          <span class="cs-nav__label">← Previous case study</span>
+          <strong>Drupal → WordPress Migration Pipeline</strong>
+        </a>
+        <a class="card project-card cs-nav__link cs-nav__link--next" href="dresser.html">
+          <span class="cs-nav__label">Next case study →</span>
+          <strong>Dresser / Drawer Nested Blocks</strong>
+        </a>
+      </nav>
     </main>
 
     <footer class="wrap">
