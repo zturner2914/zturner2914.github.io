@@ -3,16 +3,17 @@
   <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zach Turner – Portfolio</title>
-  <meta name="description" content="Senior WordPress VIP developer and technical lead. Custom Gutenberg blocks in React and TypeScript, migration pipelines, and multisite governance for editorial platforms." />
-  <meta property="og:title" content="Zach Turner · Portfolio" />
-  <meta property="og:description" content="Custom Gutenberg blocks · WordPress VIP · React / TypeScript · Editorial platforms" />
+  <title>Zach Turner · Editorial Platform Engineer</title>
+  <meta name="description" content="Senior WordPress VIP developer and technical lead. Custom Gutenberg blocks in React and TypeScript, migration pipelines, and multisite governance for publishing platforms." />
+  <meta property="og:title" content="Zach Turner · Editorial Platform Engineer" />
+  <meta property="og:description" content="Custom Gutenberg blocks · WordPress VIP · React / TypeScript · Publishing platforms" />
   <meta property="og:type" content="website" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#FBFAF7" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='14' y='14' width='72' height='72' fill='%23C4122F'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -21,242 +22,214 @@
 
     <header class="nav" role="banner">
       <div class="wrap nav-inner">
-        <div class="brand"><span class="dot" aria-hidden="true"></span> Zach Turner</div>
+        <div class="brand">Zach Turner</div>
         <nav class="nav-links" aria-label="Primary">
           <a href="#work">Work</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
-          <a class="btn" href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          <a href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
    <main class="wrap" id="main-content">
-      <section class="hero">
+      <section class="hero block" data-block="cet/hero">
         <div>
-          <div class="kicker">Senior Software Engineer · Technical Lead · Denver, CO</div>
-          <h1><span class="name-gradient">Zach Turner</span></h1>
+          <div class="kicker">Editorial Platform Engineer · Denver, CO</div>
+          <h1>Zach Turner</h1>
           <p class="lead">
-            I build editorial platforms on WordPress VIP for sites with millions of monthly visitors. Custom Gutenberg blocks from scratch in React and TypeScript. No ACF, no page builders. The editor is the primary user, not an afterthought.
+            I build publishing platforms on WordPress VIP. Custom Gutenberg blocks, no ACF, no page builders. The editor is the primary user.
           </p>
-          <div class="stack" aria-label="Tech stack">
-            <span class="pill">WordPress VIP</span>
-            <span class="pill">Gutenberg</span>
-            <span class="pill">React</span>
-            <span class="pill">TypeScript</span>
-            <span class="pill">PHP</span>
-            <span class="pill">Node.js</span>
-            <span class="pill">REST / GraphQL</span>
-            <span class="pill">Multisite</span>
-          </div>
+          <p class="hero-skills">WordPress VIP · Gutenberg · React · TypeScript · PHP · Node.js</p>
           <div class="hero-cta">
-            <a class="btn btn--primary" data-icon="arrow" href="#work">See my work</a>
-            <a class="btn" href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+            <a class="btn" href="#work">See the work</a>
+            <a href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
           </div>
         </div>
-        <div class="card terminal" role="img" aria-label="Terminal window showing a WordPress migration command completing successfully">
-          <div class="terminal__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="terminal block" data-block="cet/terminal" role="img" aria-label="Terminal window showing a WordPress migration command completing successfully">
+          <div class="terminal__bar" aria-hidden="true">zsh · cet-migration</div>
           <pre class="terminal__body" aria-hidden="true"><span class="cmd">wp plugin activate cet-migration</span><span class="out">Plugin 'cet-migration' activated.</span><span class="cmd">wp cet migrate --network</span><span class="ok">nodes → Gutenberg blocks</span><span class="ok">media · taxonomies · menus</span><span class="ok">internal links + 301 redirects</span><span class="out">Migration complete. Parity verified.</span><span class="cmd"><span class="cursor"></span></span></pre>
         </div>
       </section>
 
       <section id="work" class="section" aria-labelledby="work-heading">
         <h2 id="work-heading">Selected Work</h2>
-        <div class="grid projects">
-          <article class="item featured card project-card reveal">
-            <div>
-              <span class="flag">Featured</span>
-              <h3>Program Aggregation Platform</h3>
-              <p>An end-to-end content platform for a sports media network with millions of monthly visitors. A geolocation widget captures the visitor’s location. A taxonomy-aware query engine aggregates programs and articles with <code>any</code>/<code>all</code> logic. A server-rendered Gutenberg block, built from scratch in React and PHP, surfaces the results: crawlable, editor-configurable, and monetizable with layout-safe ad slots.</p>
-              <div class="stack" style="margin-top:8px">
-                <span class="pill">Gutenberg</span>
-                <span class="pill">React</span>
-                <span class="pill">SSR</span>
-                <span class="pill">REST</span>
-                <span class="pill">WP_Query</span>
-              </div>
-              <p style="margin-top:10px"><strong>Impact:</strong> SEO-first, location-aware landing pages that editors generate without manual curation.</p>
-              <div class="card-actions">
-                <a class="btn btn--primary" data-icon="arrow" href="case-studies/programs-aggregator.html">
-                  Full case study
-                </a>
-                <a class="btn btn--secondary" data-icon="arrow" href="case-studies/aggregation.html">
-                  Query engine deep dive
-                </a>
-              </div>
-            </div>
-            <div class="featured__media">
-              <svg class="diagram" viewBox="0 0 420 320" role="img" aria-label="Diagram: a geolocation widget and a category REST API feed a server-rendered block that outputs a program grid and an article list">
-                <rect class="box" x="16" y="16" width="185" height="64" rx="14"/>
-                <text x="108" y="43" text-anchor="middle">Geo widget</text>
-                <text class="sub" x="108" y="64" text-anchor="middle">location cookie · lat / lon</text>
-                <rect class="box" x="219" y="16" width="185" height="64" rx="14"/>
-                <text x="311" y="43" text-anchor="middle">Category REST API</text>
-                <text class="sub" x="311" y="64" text-anchor="middle">hierarchy · lookup tables</text>
-                <line class="flow" x1="108" y1="80" x2="108" y2="116"/>
-                <polygon class="arrowhead" points="108,128 102,116 114,116"/>
-                <line class="flow" x1="311" y1="80" x2="311" y2="116"/>
-                <polygon class="arrowhead" points="311,128 305,116 317,116"/>
-                <rect class="box box--accent" x="80" y="128" width="260" height="72" rx="14"/>
-                <text x="210" y="159" text-anchor="middle">SSR render.php</text>
-                <text class="sub" x="210" y="182" text-anchor="middle">attribute scoping · taxonomy merge</text>
-                <line class="flow" x1="108" y1="200" x2="108" y2="236"/>
-                <polygon class="arrowhead" points="108,248 102,236 114,236"/>
-                <line class="flow" x1="311" y1="200" x2="311" y2="236"/>
-                <polygon class="arrowhead" points="311,248 305,236 317,236"/>
-                <rect class="box" x="16" y="248" width="185" height="56" rx="14"/>
-                <text x="108" y="272" text-anchor="middle">Program grid</text>
-                <text class="sub" x="108" y="291" text-anchor="middle">geo-filtered · ad slot</text>
-                <rect class="box" x="219" y="248" width="185" height="56" rx="14"/>
-                <text x="311" y="272" text-anchor="middle">Article list</text>
-                <text class="sub" x="311" y="291" text-anchor="middle">taxonomy-driven</text>
-              </svg>
-            </div>
-          </article>
 
-          <article class="item featured flip card project-card reveal">
-            <div>
-              <span class="flag">Featured</span>
-              <h3>Drupal → WordPress Migration Pipeline</h3>
-              <p>Full lifecycle ownership: I helped build the original Drupal platform, then architected the move off it. A custom plugin migrates nodes, media, and taxonomies from Drupal 9 into block-based WordPress content across a multisite network. Recursive traversal preserves nested layouts, rewrites internal links, and applies 301 redirects. Parity verified against the source.</p>
-              <div class="stack" style="margin-top:8px">
-                <span class="pill">Plugin</span>
-                <span class="pill">PHP</span>
-                <span class="pill">WordPress VIP</span>
-                <span class="pill">Drupal 9</span>
-                <span class="pill">Multisite</span>
-              </div>
-              <p style="margin-top:10px"><strong>Impact:</strong> Replaced manual page rebuilds with an automated pipeline and standardized content models across sites.</p>
-              <div class="card-actions">
-                <a class="btn btn--primary" data-icon="arrow" href="case-studies/migration.html">
-                  Full case study
-                </a>
-              </div>
+        <article class="story block reveal" data-block="cet/case-study">
+          <div class="story__body">
+            <h3>Program Aggregation Platform</h3>
+            <p class="dek">Location-aware content hubs that editors build without engineers.</p>
+            <p>A sports media network needed program listings that match where the reader actually is. A geolocation widget captures the visitor's location. A taxonomy-aware query engine aggregates programs and articles with <code>any</code>/<code>all</code> logic. A server-rendered Gutenberg block, built from scratch in React and PHP, surfaces the results. Crawlable, editor-configurable, and monetizable with layout-safe ad slots.</p>
+            <p class="tech-line">Gutenberg · React · SSR · REST · WP_Query</p>
+            <div class="story__links">
+              <a class="btn" href="case-studies/programs-aggregator.html">See the case study</a>
+              <a href="case-studies/aggregation.html">Read the query engine deep dive</a>
             </div>
-            <div class="featured__media">
-              <svg class="diagram" viewBox="0 0 420 320" role="img" aria-label="Diagram: Drupal 9 content flows through the migration plugin into WordPress VIP as Gutenberg blocks">
-                <rect class="box" x="60" y="16" width="300" height="72" rx="14"/>
-                <text x="210" y="47" text-anchor="middle">Drupal 9</text>
-                <text class="sub" x="210" y="70" text-anchor="middle">nodes · media · taxonomies · menus</text>
-                <line class="flow" x1="210" y1="88" x2="210" y2="112"/>
-                <polygon class="arrowhead" points="210,124 204,112 216,112"/>
-                <rect class="box box--accent" x="60" y="124" width="300" height="72" rx="14"/>
-                <text x="210" y="155" text-anchor="middle">Migration plugin</text>
-                <text class="sub" x="210" y="178" text-anchor="middle">recursive traversal · field normalization</text>
-                <line class="flow" x1="210" y1="196" x2="210" y2="220"/>
-                <polygon class="arrowhead" points="210,232 204,220 216,220"/>
-                <rect class="box" x="60" y="232" width="300" height="72" rx="14"/>
-                <text x="210" y="263" text-anchor="middle">WordPress VIP</text>
-                <text class="sub" x="210" y="286" text-anchor="middle">Gutenberg blocks · links · 301 redirects</text>
-              </svg>
+          </div>
+          <aside class="story__aside">
+            <div class="pull-stat">
+              <div class="pull-stat__value">Millions</div>
+              <div class="pull-stat__label">monthly visitors served</div>
             </div>
-          </article>
+            <svg class="diagram" viewBox="0 0 420 320" role="img" aria-label="Diagram: a geolocation widget and a category REST API feed a server-rendered block that outputs a program grid and an article list">
+              <rect class="box" x="16" y="16" width="185" height="64"/>
+              <text x="108" y="43" text-anchor="middle">Geo widget</text>
+              <text class="sub" x="108" y="64" text-anchor="middle">location cookie · lat / lon</text>
+              <rect class="box" x="219" y="16" width="185" height="64"/>
+              <text x="311" y="43" text-anchor="middle">Category REST</text>
+              <text class="sub" x="311" y="64" text-anchor="middle">hierarchy · lookup tables</text>
+              <line class="flow" x1="108" y1="80" x2="108" y2="116"/>
+              <polygon class="arrowhead" points="108,128 102,116 114,116"/>
+              <line class="flow" x1="311" y1="80" x2="311" y2="116"/>
+              <polygon class="arrowhead" points="311,128 305,116 317,116"/>
+              <rect class="box box--accent" x="80" y="128" width="260" height="72"/>
+              <text x="210" y="159" text-anchor="middle">SSR render.php</text>
+              <text class="sub" x="210" y="182" text-anchor="middle">attribute scoping · taxonomy merge</text>
+              <line class="flow" x1="108" y1="200" x2="108" y2="236"/>
+              <polygon class="arrowhead" points="108,248 102,236 114,236"/>
+              <line class="flow" x1="311" y1="200" x2="311" y2="236"/>
+              <polygon class="arrowhead" points="311,248 305,236 317,236"/>
+              <rect class="box" x="16" y="248" width="185" height="56"/>
+              <text x="108" y="272" text-anchor="middle">Program grid</text>
+              <text class="sub" x="108" y="291" text-anchor="middle">geo-filtered · ad slot</text>
+              <rect class="box" x="219" y="248" width="185" height="56"/>
+              <text x="311" y="272" text-anchor="middle">Article list</text>
+              <text class="sub" x="311" y="291" text-anchor="middle">taxonomy-driven</text>
+            </svg>
+          </aside>
+        </article>
 
-          <article class="item col-6 card project-card reveal">
+        <article class="story block reveal" data-block="cet/case-study">
+          <div class="story__body">
+            <h3>Drupal to WordPress Migration Pipeline</h3>
+            <p class="dek">I helped build the Drupal platform. Then I got everyone off it.</p>
+            <p>Full lifecycle ownership. A custom plugin migrates nodes, media, and taxonomies from Drupal 9 into block-based WordPress content across a multisite network. Recursive traversal preserves nested layouts, rewrites internal links, and applies 301 redirects. Parity verified against the source.</p>
+            <p class="tech-line">PHP · WordPress VIP · Drupal 9 · Multisite</p>
+            <div class="story__links">
+              <a class="btn" href="case-studies/migration.html">See the case study</a>
+            </div>
+          </div>
+          <aside class="story__aside">
+            <div class="pull-stat pull-stat--todo">
+              <div class="pull-stat__value">[TODO: pages migrated]</div>
+              <div class="pull-stat__label">moved without manual rebuilds</div>
+            </div>
+            <svg class="diagram" viewBox="0 0 420 320" role="img" aria-label="Diagram: Drupal 9 content flows through the migration plugin into WordPress VIP as Gutenberg blocks">
+              <rect class="box" x="60" y="16" width="300" height="72"/>
+              <text x="210" y="47" text-anchor="middle">Drupal 9</text>
+              <text class="sub" x="210" y="70" text-anchor="middle">nodes · media · taxonomies · menus</text>
+              <line class="flow" x1="210" y1="88" x2="210" y2="112"/>
+              <polygon class="arrowhead" points="210,124 204,112 216,112"/>
+              <rect class="box box--accent" x="60" y="124" width="300" height="72"/>
+              <text x="210" y="155" text-anchor="middle">Migration plugin</text>
+              <text class="sub" x="210" y="178" text-anchor="middle">recursive traversal · field normalization</text>
+              <line class="flow" x1="210" y1="196" x2="210" y2="220"/>
+              <polygon class="arrowhead" points="210,232 204,220 216,220"/>
+              <rect class="box" x="60" y="232" width="300" height="72"/>
+              <text x="210" y="263" text-anchor="middle">WordPress VIP</text>
+              <text class="sub" x="210" y="286" text-anchor="middle">Gutenberg blocks · links · 301 redirects</text>
+            </svg>
+          </aside>
+        </article>
+
+        <article class="story block reveal" data-block="cet/case-study">
+          <div class="story__body">
             <h3>Multisite Plugin Permission Manager</h3>
-            <p>Scoped plugin management for a WordPress multisite network: site Admins manage a curated, per-site allow-list of plugins while Super Admins retain network-wide control. Whitelist intersection on save and at runtime for defense in depth.</p>
-            <div class="card-actions">
-              <a class="btn btn--primary" data-icon="arrow" href="case-studies/permission-manager.html">
-                Full case study
-              </a>
+            <p class="dek">Per-site plugin control that Super Admins actually trust.</p>
+            <p>Scoped plugin management for a WordPress multisite network. Site Admins manage a curated, per-site allow-list of plugins while Super Admins retain network-wide control. Whitelist intersection on save and again at runtime. Defense in depth, no JavaScript required.</p>
+            <p class="tech-line">Multisite · Capabilities · Security · OOP PHP</p>
+            <div class="story__links">
+              <a class="btn" href="case-studies/permission-manager.html">See the case study</a>
             </div>
-            <div class="stack" style="margin-top:8px">
-              <span class="pill">Multisite</span>
-              <span class="pill">Capabilities</span>
-              <span class="pill">Security</span>
-              <span class="pill">OOP PHP</span>
+          </div>
+          <aside class="story__aside">
+            <div class="pull-stat pull-stat--todo">
+              <div class="pull-stat__value">[TODO: sites governed]</div>
+              <div class="pull-stat__label">under per-site allow-lists</div>
             </div>
-          </article>
+          </aside>
+        </article>
 
-          <article class="item col-6 card project-card reveal">
+        <article class="story block reveal" data-block="cet/case-study">
+          <div class="story__body">
             <h3>Dresser / Drawer Nested Blocks</h3>
-            <p>Parent/child block system enabling editors to assemble accordion-style layouts. OOP architecture, attributes persistence, and editor-friendly controls.</p>
-            <div class="card-actions">
-              <a class="btn btn--primary" data-icon="arrow" href="case-studies/dresser.html">
-                Full case study
-              </a>
+            <p class="dek">An accordion editors can't break.</p>
+            <p>Parent/child block system for accordion-style layouts. The Dresser renders its own body and disclaimer, the Drawers nest inside it, orderable and individually configurable. Server-side rendering keeps the markup safe and semantic.</p>
+            <p class="tech-line">Gutenberg · React · SCSS</p>
+            <div class="story__links">
+              <a class="btn" href="case-studies/dresser.html">See the case study</a>
             </div>
-            <div class="stack" style="margin-top:8px">
-              <span class="pill">Gutenberg</span>
-              <span class="pill">React</span>
-              <span class="pill">SCSS</span>
-            </div>
-          </article>
-        </div>
+          </div>
+          <aside class="story__aside"></aside>
+        </article>
       </section>
 
-      <section id="about" class="section">
-        <h2>About</h2>
-        <div class="two-col">
-          <div class="card project-card reveal">
+      <section id="about" class="section" aria-labelledby="about-heading">
+        <h2 id="about-heading">About</h2>
+        <div class="two-col block reveal" data-block="cet/about">
+          <div>
             <h3>What I do</h3>
             <p>I lead WordPress VIP development on a multisite network of hundreds of client properties, including SportsEngine and GolfNow. Custom Gutenberg blocks from scratch in React and TypeScript. No ACF, no page builders. That's a deliberate architectural choice: real blocks are faster, testable, and nicer for editors.</p>
-            <p style="margin-top:8px">I treat the editor as the primary user. If the editing experience is clunky, the block isn't done.</p>
+            <p>I treat the editor as the primary user. If the editing experience is clunky, the block isn't done.</p>
           </div>
-          <div class="card project-card reveal">
-            <h3>Selected Tech</h3>
-            <div class="stack" aria-label="Languages and tools" style="margin-top:4px">
-              <span class="pill">WordPress VIP</span>
-              <span class="pill">Gutenberg</span>
-              <span class="pill">React</span>
-              <span class="pill">TypeScript</span>
-              <span class="pill">PHP</span>
-              <span class="pill">Node.js</span>
-              <span class="pill">Next.js</span>
-              <span class="pill">GraphQL</span>
-              <span class="pill">Drupal 9 / Twig</span>
-              <span class="pill">Jest</span>
-              <span class="pill">Lando / Docker</span>
-              <span class="pill">AWS</span>
-            </div>
-            <p style="margin-top:12px">Plus the unglamorous parts that make platforms work: content modeling, deployment lifecycle, technical SEO, and mentoring other developers.</p>
+          <div>
+            <h3>Tooling</h3>
+            <p class="mono-line">WordPress VIP · Gutenberg · React · TypeScript · PHP · Node.js · Next.js · GraphQL · Drupal 9 / Twig · Jest · Lando / Docker · AWS</p>
+            <p>Plus the unglamorous parts that make platforms work: content modeling, deployment lifecycle, technical SEO, and mentoring other developers.</p>
           </div>
         </div>
 
-        <div class="card project-card reveal" style="margin-top:20px">
+        <div class="timeline-wrap block reveal" data-block="cet/experience" style="margin-top:8px">
           <h3>Experience</h3>
           <ol class="timeline">
             <li>
               <div class="timeline__when">2021 · Present</div>
-              <strong>Versant · Software Engineer / Technical Lead</strong>
-              <p>WordPress VIP agency spun out of NBC Sports Next. Tech lead on a multisite network serving hundreds of client properties with millions of monthly visitors. Custom block systems, the Drupal migration, plugin architecture, mentoring.</p>
+              <div>
+                <strong>Versant · Software Engineer / Technical Lead</strong>
+                <p>WordPress VIP agency spun out of NBC Sports Next. Tech lead on a multisite network serving hundreds of client properties with millions of monthly visitors. Custom block systems, the Drupal migration, plugin architecture, mentoring.</p>
+              </div>
             </li>
             <li>
               <div class="timeline__when">2018 · 2021</div>
-              <strong>NBC Sports Next / SportsEngine · Front-End Developer</strong>
-              <p>Drupal content types, views, and Twig components for sports media properties. Angular and early WordPress work. Building this platform is how I knew exactly how to migrate off it later.</p>
+              <div>
+                <strong>NBC Sports Next / SportsEngine · Front-End Developer</strong>
+                <p>Drupal content types, views, and Twig components for sports media properties. Angular and early WordPress work. Building this platform is how I knew exactly how to migrate off it later.</p>
+              </div>
             </li>
             <li>
               <div class="timeline__when">Before that</div>
-              <strong>Martin Williams · Web Developer</strong>
-              <p>Client WordPress sites at a Minneapolis ad agency. The ACF years. Going custom later was a deliberate choice, not ignorance of the shortcut.</p>
+              <div>
+                <strong>Martin Williams · Web Developer</strong>
+                <p>Client WordPress sites at a Minneapolis ad agency. The ACF years. Going custom later was a deliberate choice, not ignorance of the shortcut.</p>
+              </div>
             </li>
           </ol>
         </div>
       </section>
 
-      <section id="contact" class="section">
-        <h2>Contact</h2>
-        <div class="card project-card reveal">
-          <p>Denver, CO · <a href="mailto:zturner29@gmail.com">zturner29@gmail.com</a></p>
-          <p>
-            <a class="btn" href="https://www.linkedin.com/in/zachary-turner-b9834b25/" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="btn" href="https://github.com/zturner2914" target="_blank" rel="noopener">GitHub</a>
-            <a class="btn" href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Download Resume</a>
-          </p>
+      <section id="contact" class="section" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact</h2>
+        <div class="contact-card block reveal" data-block="cet/contact">
+          <p class="mono-line">Denver, CO · <a href="mailto:zturner29@gmail.com">zturner29@gmail.com</a></p>
+          <div class="hero-cta" style="margin-top:16px">
+            <a class="btn" href="mailto:zturner29@gmail.com">Email me</a>
+            <a href="https://www.linkedin.com/in/zachary-turner-b9834b25/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/zturner2914" target="_blank" rel="noopener">GitHub</a>
+            <a href="assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          </div>
         </div>
       </section>
   </main>
 
     <footer class="wrap">
-      <small>© <span id="y"></span> Zach Turner · Built with HTML/CSS on GitHub Pages</small>
+      <small>© <span id="y"></span> Zach Turner · Set in Newsreader and IBM Plex · Built by hand on GitHub Pages</small>
     </footer>
 
     <script>
       // Current year
       document.getElementById('y').textContent = new Date().getFullYear();
 
-      // Optional: set aria-current on nav when hash changes
+      // aria-current on nav when hash changes
       const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
       function updateAriaCurrent() {
         const hash = window.location.hash || '#work';
@@ -268,7 +241,7 @@
       window.addEventListener('hashchange', updateAriaCurrent);
       window.addEventListener('DOMContentLoaded', updateAriaCurrent);
 
-      // Scroll reveal
+      // Scroll reveal (opacity only)
       const revealEls = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {
@@ -278,7 +251,7 @@
               io.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.12 });
+        }, { threshold: 0.1 });
         revealEls.forEach((el) => io.observe(el));
       } else {
         revealEls.forEach((el) => el.classList.add('in'));

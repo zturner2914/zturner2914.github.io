@@ -5,30 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Case Study · Program Aggregation Platform · Zach Turner</title>
     <meta name="description" content="Server-rendered Program Aggregator block with geo context, taxonomy merging, SEO-first rendering, scalable content queries, and optional ad injection." />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
-
-    <!-- Prism.js theme (okaidia works well in dark mode but still readable in light) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#FBFAF7">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='14' y='14' width='72' height='72' fill='%23C4122F'/%3E%3C/svg%3E" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- IMPORTANT: relative path from /case-studies/ -->
     <link rel="stylesheet" href="../assets/css/stylesheet.css" />
-
-    <style>
-      /* Page-specific layout only (everything else comes from your shared CSS) */
-      .cs-hero h1 { margin: .35em 0; }
-      .cs-meta { color: var(--muted); }
-      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
-
-      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
-      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
-    </style>
   </head>
   <body>
     <header class="nav" role="banner">
@@ -38,20 +24,20 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          <a href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
-      <section class="section cs-hero">
+      <section class="section cs-hero block" data-block="cet/case-study">
         <a class="crumb" href="../index.html#work">← All work</a>
         <div class="kicker">Case Study</div>
         <h1>Program Aggregation Platform</h1>
         <p class="cs-meta">WordPress · Gutenberg · Server‑Side Rendering · Geo Context · API Integration</p>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/problem">
         <h2>Problem</h2>
         <div class="card project-card">
           <p>
@@ -61,7 +47,7 @@
         </div>
       </section>
 
-   <section class="section">
+   <section class="section block" data-block="cet/seo">
       <h2>SEO & Performance Principles</h2>
       <div class="card project-card">
         <ul class="colored">
@@ -74,7 +60,7 @@
       </div>
     </section>
 
-<section class="section">
+<section class="section block" data-block="cet/block-json">
   <h2>Block Definition (block.json excerpt)</h2>
   <div class="card project-card">
     <p>
@@ -143,7 +129,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section block" data-block="cet/editor">
   <h2>Editor Experience & Dynamic Controls</h2>
   <div class="card project-card">
     <p>
@@ -193,7 +179,7 @@ useEffect(() => {
 </section>
 
 
-<section class="section" id="render-php">
+<section class="section block" id="render-php" data-block="cet/render">
   <h2>Server-Side Aggregation (render.php)</h2>
 
   <div class="card project-card">
@@ -296,7 +282,7 @@ echo $article_list_block;
 </section>
 
 
-<section class="section" id="program-grid-ssr">
+<section class="section block" id="program-grid-ssr" data-block="cet/program-grid">
   <h2>Program Grid · Dynamic Query & SEO Routing</h2>
 
   <div class="card project-card">
@@ -381,7 +367,7 @@ if ($adEnableLarge && (int) $adPositionLarge === (int) ($index + 1)) {
 
 </section>
 
-<section class="section">
+<section class="section block" data-block="cet/platform">
   <h2>Platform Pieces</h2>
   <div class="card project-card">
     <p>
@@ -396,15 +382,21 @@ if ($adEnableLarge && (int) $adPositionLarge === (int) ($index + 1)) {
   </div>
 </section>
 
-<section class="section" aria-labelledby="results-heading">
+<section class="section block" aria-labelledby="results-heading" data-block="cet/results">
   <h2 id="results-heading">Results</h2>
-  <div class="card project-card">
-    <ul class="colored">
-      <li><strong>SEO-first aggregation:</strong> Fully server-rendered program and article content to ensure crawlability, clean markup, and structured internal linking.</li>
-      <li><strong>Scalable content hubs:</strong> Enabled editors to dynamically generate location-aware and taxonomy-driven landing pages without manual curation.</li>
-      <li><strong>Composable architecture:</strong> Decoupled data fetching, aggregation logic, and presentation layers for portability across multisite environments.</li>
-      <li><strong>Monetization without compromise:</strong> Configurable ad injection that preserved layout stability and avoided negative impact to performance metrics.</li>
-    </ul>
+  <div class="cs-results">
+    <div class="card project-card">
+      <ul class="colored">
+        <li><strong>SEO-first aggregation:</strong> Fully server-rendered program and article content to ensure crawlability, clean markup, and structured internal linking.</li>
+        <li><strong>Scalable content hubs:</strong> Enabled editors to dynamically generate location-aware and taxonomy-driven landing pages without manual curation.</li>
+        <li><strong>Composable architecture:</strong> Decoupled data fetching, aggregation logic, and presentation layers for portability across multisite environments.</li>
+        <li><strong>Monetization without compromise:</strong> Configurable ad injection that preserved layout stability and avoided negative impact to performance metrics.</li>
+      </ul>
+    </div>
+    <aside class="pull-stat">
+      <div class="pull-stat__value">Millions</div>
+      <div class="pull-stat__label">monthly visitors served</div>
+    </aside>
   </div>
 </section>
 

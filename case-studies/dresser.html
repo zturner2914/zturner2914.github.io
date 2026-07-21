@@ -5,32 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Case Study · Dresser / Drawer Nested Blocks · Zach Turner</title>
     <meta name="description" content="Parent/child Gutenberg blocks: a Dresser container that renders nested Drawer blocks with optional expandable content." />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#0B0D10" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#F7FAFC" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%233185E0'/%3E%3C/svg%3E" />
-
-    <!-- Prism.js theme (okaidia: high contrast in dark, readable in light) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#FBFAF7">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='14' y='14' width='72' height='72' fill='%23C4122F'/%3E%3C/svg%3E" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- IMPORTANT: relative path from /case-studies/ -->
     <link rel="stylesheet" href="../assets/css/stylesheet.css" />
-
-    <style>
-      /* Page-specific layout only (everything else comes from your shared CSS) */
-      .cs-hero h1 { margin: .35em 0; }
-      .cs-meta { color: var(--muted); }
-      .props-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-      @media (max-width: 860px){ .props-grid { grid-template-columns: 1fr; } }
-
-      /* Code blocks match site aesthetic */
-      pre { background: var(--panel); padding: 12px; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--border); box-shadow: var(--shadow); }
-      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; }
-    </style>
   </head>
   <body>
     <header class="nav" role="banner">
@@ -40,20 +25,20 @@
           <a href="../index.html#work">Work</a>
           <a href="../index.html#about">About</a>
           <a href="../index.html#contact">Contact</a>
-          <a class="btn" href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          <a href="../assets/pdfs/Zach-Turner-Resume.pdf" target="_blank" rel="noopener">Resume</a>
         </nav>
       </div>
     </header>
 
     <main class="wrap" id="main-content">
-      <section class="section cs-hero">
+      <section class="section cs-hero block" data-block="cet/case-study">
         <a class="crumb" href="../index.html#work">← All work</a>
         <div class="kicker">Case Study</div>
         <h1>Dresser / Drawer · Nested Gutenberg Blocks</h1>
         <p class="cs-meta">WordPress · Gutenberg · Parent/Child Architecture</p>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/problem">
         <h2>Problem</h2>
         <div class="card project-card">
           <p>
@@ -65,7 +50,7 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/approach">
         <h2>Approach</h2>
         <div class="card project-card">
           <ul class="colored">
@@ -77,7 +62,7 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/snippet">
         <h2>Key Snippet · Parent renders children</h2>
         <div class="card project-card">
           <p>
@@ -127,7 +112,7 @@ if ( ! empty( $attributes['bodyLeftRight'] ) &amp;&amp; $attributes['bodyLeftRig
         </div>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/snippet">
         <h2>Key Snippet · Child block (Drawer)</h2>
         <div class="card project-card">
           <p>
@@ -168,7 +153,7 @@ $nonContentFlag = empty( $content ) ? 'non-content-drawer' : '';
         </div>
       </section>
 
-      <section class="section">
+      <section class="section block" data-block="cet/editor">
         <h2>Editor Experience & Structure</h2>
         <div class="card project-card">
           <div class="props-grid">
@@ -184,7 +169,7 @@ $nonContentFlag = empty( $content ) ? 'non-content-drawer' : '';
         </div>
       </section>
 
-      <section class="section" aria-labelledby="results-heading">
+      <section class="section block" aria-labelledby="results-heading" data-block="cet/results">
         <h2 id="results-heading">Results</h2>
         <div class="card project-card">
           <ul class="colored">
